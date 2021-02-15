@@ -1,0 +1,47 @@
+{
+  "expo": {
+    "name": "Kopenhagen Roque",
+    "slug": "roque-delivery",
+    "description": "Vem ser roque delivery",
+    "platforms": [
+      "android"
+    ],
+    "privacy": "public",
+    "version": "1.5.0",
+    "sdkVersion": "38.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#000"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier":  "com.essenciaf.essenciaf",
+      "buildNumber": "1.5.0"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/ForegroudImage.png",
+        "backgroundColor": "#000"
+      },
+      "permissions" : [],
+      "package": "com.essenciaf.essenciaf",
+      "versionCode": 8
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "androidStatusBar": {
+      "barStyle": "light-content",
+      "backgroundColor": "#000"
+    }
+  }
+}
