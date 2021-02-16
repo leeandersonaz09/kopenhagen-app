@@ -5,7 +5,6 @@ import {
     TouchableOpacity,
     Image,
     ScrollView,
-    FlatList,
 } from 'react-native';
 //import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -14,7 +13,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { addItem } from '../../store/ducks/cart';
 
 import { showMessage } from 'react-native-flash-message';
-import { Icon, Button } from 'native-base';
+import { Icon} from 'native-base';
 import styles from './styles';
 
 
@@ -26,9 +25,10 @@ function ProductDetails({ route, navigation }) {
 
     function addItemCart(item) {
 		dispatch(addItem(item));
+        console.log(item)
 
 		showMessage({
-			message: `${data.tittle} adicioando com sucesso`,
+			message: `${item.tittle} adicioando com sucesso`,
 			type: 'success'
 		});
 	}
@@ -45,6 +45,7 @@ function ProductDetails({ route, navigation }) {
 
                 <View style={{ textAlign: 'center', alignItems: 'center', marginTop: 70 }}>
                     <TouchableOpacity
+                        keyExtractor={data => String(data.key)}
                         onPress={() => addItemCart(data)}
                         style={styles.addCartButton}>
                         <Text style={{ fontSize: 18, color: "white", fontWeight: "bold" }}>Adicionar ao </Text>

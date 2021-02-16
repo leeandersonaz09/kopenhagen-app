@@ -61,40 +61,33 @@ function Explorer({ route, navigation }) {
     try {
       await dataRef.limit(limit)
         .onSnapshot(querySnapshot => {
-         if(!querySnapshot.empty){
-          const list = [];
+          if (!querySnapshot.empty) {
+            const list = [];
 
-          // Get the last document
-          let lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
-          setLastVisible(lastVisible);
+            // Get the last document
+            let lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+            setLastVisible(lastVisible);
 
-          querySnapshot.forEach(doc => {
+            querySnapshot.forEach(doc => {
 
-            const { img, tittle, description, size, price, color1, color2, color3, color4, color5, color6, data } = doc.data();
-            list.push({
-              key: doc.id,
-              size,
-              img,
-              description,
-              tittle,
-              price,
-              data,
-              color1,
-              color2,
-              color3,
-              color4,
-              color5,
-              color6
+              const { img, tittle, description, price, data } = doc.data();
+              list.push({
+                key: doc.id,
+                img,
+                description,
+                tittle,
+                price,
+                data,
+              });
             });
-          });
 
-          setdataBackup(list);
-          setdocumentData(list);
-          setTimeout(() => {
-            setLoading(false);
-          }, 2000);
+            setdataBackup(list);
+            setdocumentData(list);
+            setTimeout(() => {
+              setLoading(false);
+            }, 2000);
 
-         }
+          }
         })
     } catch (error) {
       console.log(error)
@@ -112,9 +105,11 @@ function Explorer({ route, navigation }) {
       await dataRef.startAfter(lastVisible.data().data).limit(limit)
         .onSnapshot(querySnapshot => {
 
-          if(!querySnapshot.empty){
-
-            const list = [];
+          if (querySnapshot.empty) {
+            setRefreshing(false);
+            return
+          }
+          const list = [];
 
           // Get the last document
           let lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
@@ -122,21 +117,14 @@ function Explorer({ route, navigation }) {
 
           querySnapshot.forEach(doc => {
 
-            const { img, tittle, description, size, price, color1, color2, color3, color4, color5, color6, data } = doc.data();
+            const { img, tittle, description, price, data } = doc.data();
             list.push({
               key: doc.id,
-              size,
               img,
               description,
               tittle,
               price,
               data,
-              color1,
-              color2,
-              color3,
-              color4,
-              color5,
-              color6
             });
           });
 
@@ -145,7 +133,7 @@ function Explorer({ route, navigation }) {
           setTimeout(() => {
             setRefreshing(false);
           }, 1000);
-          }
+
           setRefreshing(false);
         });
     } catch (error) {
@@ -189,24 +177,21 @@ function Explorer({ route, navigation }) {
 
   }
 
-  const renderItens = useCallback(
-    (item, index) => {
-      return (
-        <>
-          <View key={index} style={{ backgroundColor: '#fff' }}>
-            <TouchableOpacity
-              onPress={() => navigation.push('Detalhes', item)}
-            >
-              <View style={styles.separatorContainer}>
-                <ExplorerList data={item} />
-              </View>
-            </TouchableOpacity>
-          </View>
-        </>
-      )
-    },
-    [],
-  )
+  const renderItens = (item, index) => {
+    return (
+      <>
+        <View key={index} style={{ backgroundColor: '#fff' }}>
+          <TouchableOpacity
+            onPress={() => navigation.push('Detalhes', item, )}
+          >
+            <View style={styles.separatorContainer}>
+              <ExplorerList data={item} />
+            </View>
+          </TouchableOpacity>
+        </View>
+      </>
+    )
+  }
 
   const renderFooter = () => {
     if (!refreshing) return null;
@@ -266,7 +251,7 @@ function Explorer({ route, navigation }) {
             // On End Reached (Takes a function)
             onEndReached={() => retrieveMore()}
             onEndReachedThreshold={0.1}
-            keyExtractor={item => item.id}
+            keyExtractor={item => item.key}
             refreshing={refreshing}
             ListFooterComponent={() => renderFooter()}
           />

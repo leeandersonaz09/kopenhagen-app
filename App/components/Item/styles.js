@@ -1,35 +1,69 @@
 import { StyleSheet } from 'react-native';
+import {metrics, colors, fonts} from '../../styles';
 
 export default StyleSheet.create({
-	container: {
-		height: 80,
-		borderWidth: 1,
-		borderColor: '#ccc',
-		borderRadius: 5,
-		marginBottom: 10,
-		flexDirection: 'row',
-		justifyContent: 'space-between'
+	content:{
+		marginTop:32,
+		flexDirection:'row',
+		alignContent:'space-between',
+		flex:1,
+		paddingHorizontal:15
 	},
-	image: {
-		height: 80,
-		width: 100,
-		borderTopLeftRadius: 5,
-		borderBottomLeftRadius: 5
+	card:{
+		flexDirection:'row',
+	},
+	image:{
+		width:124,
+		height:121,
+		borderRadius:20,
+		borderWidth:1,
+		borderColor:"#000"
+	},
+	titleSection:{
+		marginLeft:16,
+		alignContent:'space-between',
+	},
+	titleName:{
+		fontSize: fonts.headerTittle,
+		fontWeight:'bold'
 	},
 	description: {
-		flex: 2,
-		padding: 10
+		fontSize:fonts.regular,
+		color:colors.brown,
 	},
-	title: {
-		fontWeight: 'bold',
-		fontSize: 18
+	actions:{
+		alignContent:'space-around',
+		flexDirection:'row',
+		width:95,
+		height:30,
+		marginTop:40
 	},
-	titleName: {
-		color: 'gray'
+	priceSection:{
+		paddingLeft:(metrics.screenWidth/2) - 135,
+		justifyContent:'space-between'
+
+	},
+	price:{
+		textAlign:'right',
+		fontSize:fonts.headerTittle,
+		color: colors.brown2,
+	},
+	caption:{
+		fontSize:22,
+		paddingHorizontal:6
+	},
+	removeCart:{
+
 	},
 	btn: {
-		width: 50,
+		width: 53,
+		height:53,
+		borderRadius:20,
+		borderColor:"#fff",
+		borderWidth:1,
+		backgroundColor:"#ff3d00",
 		justifyContent: 'center',
-		alignItems: 'center'
+		alignItems: 'center',
+
 	}
 });

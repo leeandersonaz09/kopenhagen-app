@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList, SafeAreaView } from 'react-native';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { removeItem } from '../../store/ducks/cart';
@@ -14,7 +14,8 @@ export default function Cart() {
 	const dispatch = useDispatch();
 
 	function removeItemCart(item) {
-		dispatch(removeItem(item.id));
+		console.log(item);
+		dispatch(removeItem(item.key));
 
 		showMessage({
 			message: `${item.tittle} excluido com sucesso`,
@@ -24,18 +25,32 @@ export default function Cart() {
 
 	return (
 		<React.Fragment>
-			{cart.length > 0 ? (
-				<FlatList
-					style={{ padding: 10 }}
-					keyExtractor={(item) => String(item.id)}
-					data={cart}
-					renderItem={({ item }) => <Item item={item} removeItemCart={removeItemCart} />}
-				/>
-			) : (
-				<View style={styles.container}>
-					<Text style={styles.textMessage}>Sem produtos no carrinho</Text>
-				</View>
-			)}
+			<SafeAreaView>
+				{cart.length > 0 ? (
+					<>
+						<FlatList
+							style={{ padding: 10 }}
+							keyExtractor={(item) => String(item.key)}
+							data={cart}
+							renderItem={({ item }) => <Item item={item} removeItemCart={removeItemCart} />}
+						/>
+						<View style={styles.totalContainer}>
+							<View style={styles.totalSection}>
+								<Text style={styles.totalText}>Total</Text>
+								<View style={styles.subTotal}>
+									<Text style={styles.textsubTotal}>Subtotal</Text>
+									<Text style={styles.pricesubTotal}>R$50</Text>
+								</View>
+							</View>
+						</View>
+
+					</>
+				) : (
+					<View style={styles.container}>
+						<Text style={styles.textMessage}>Sem produtos no carrinho</Text>
+					</View>
+				)}
+			</SafeAreaView>
 		</React.Fragment>
 	);
 }
