@@ -1,25 +1,15 @@
 import React from "react";
 import Navigation from "./config/navigation";
+import FlashMessage from 'react-native-flash-message';
 
-import { createStore, combineReducers } from "redux";
-import { Provider } from "react-redux";
-import ProductsReducers from "./Store/Reducers/ProductsReducers";
-import CartReducers from "./Store/Reducers/CartReducers";
-
-const RootReducer = combineReducers({
-    products: ProductsReducers,
-    cartItems: CartReducers,
-    itemsCount: CartReducers,
-    wishListItems: CartReducers
-
-});
-
-const store = createStore(RootReducer);
+import { Provider } from 'react-redux';
+import store from './store';
 
 export default () => {
     return (
         <Provider store={store}>
             <Navigation />
+            <FlashMessage position="top" />
         </Provider>
     )
 };

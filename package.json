@@ -33,7 +33,9 @@
     "react-navigation-header-buttons": "^6.2.1",
     "react-redux": "^7.1.0",
     "redux": "^4.0.1",
-    "whatwg-fetch": "^3.0.0"
+    "whatwg-fetch": "^3.0.0",
+    "react-native-flash-message": "^0.1.15",
+    "@reduxjs/toolkit": "^1.2.3"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0"

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { View, Text } from 'react-native';
 import 'react-native-gesture-handler';
 //import navigators
 import { createStackNavigator } from "@react-navigation/stack";
@@ -16,10 +17,13 @@ import ExplorerScreen from "../screens/Explorer";
 import ProductDetails from "../screens/ProductDetails";
 import CartScreen from "../screens/Cart";
 
+import Badge from '../components/Badge';
+
 //import Produtos from "../screens/Products";
 import Contato from "../screens/Contact";
 
 import { colors } from '../styles';
+
 //para novos uruários serem redirecionados para tela welcome
 
 //instancing navigators
@@ -110,7 +114,10 @@ const AppTabsScreen = () => (
       options={{
         tabBarLabel: 'Carrinho',
         tabBarIcon: ({ color }) => (
-          <MaterialCommunityIcons name="cart" color={color} size={26} />
+          <View>
+            <MaterialCommunityIcons name="cart" color={color} size={26} />
+            <Badge />
+          </View>    
         ),
       }}
     />

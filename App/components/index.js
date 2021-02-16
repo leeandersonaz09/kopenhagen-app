@@ -9,7 +9,9 @@ import Text from './Text'
 import View from './View';
 import Category from './Category';
 import ExplorerList from './ExplorerList';
-import MyHeaderButton from './MyHeaderButton';
+import DetailsContainer from './DetailsContainer';
+import Badge from './Badge';
+import Item from './Item';
 
 export {
   Header,
@@ -22,5 +24,7 @@ export {
   View, 
   Category,
   ExplorerList,
-  MyHeaderButton
+  DetailsContainer,
+  Badge,
+  Item
 };

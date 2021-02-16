@@ -195,13 +195,7 @@ function Explorer({ route, navigation }) {
         <>
           <View key={index} style={{ backgroundColor: '#fff' }}>
             <TouchableOpacity
-              onPress={() => navigation.push('Detalhes', {
-                id: item.key,
-                tittle: item.tittle,
-                img: item.img,
-                description: item.description,
-                price: item.price,
-              })}
+              onPress={() => navigation.push('Detalhes', item)}
             >
               <View style={styles.separatorContainer}>
                 <ExplorerList data={item} />
