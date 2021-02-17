@@ -22,13 +22,17 @@ function ProductDetails({ route, navigation }) {
     const dispatch = useDispatch();
     /* 2. Get the param */
     const data = route.params;
+    const cartData = {
+        data: data,
+        quantity:  1,
+    };
 
     function addItemCart(item) {
 		dispatch(addItem(item));
         console.log(item)
 
 		showMessage({
-			message: `${item.tittle} adicioando com sucesso`,
+			message: `${item.data.tittle} adicioando com sucesso`,
 			type: 'success'
 		});
 	}
@@ -45,8 +49,8 @@ function ProductDetails({ route, navigation }) {
 
                 <View style={{ textAlign: 'center', alignItems: 'center', marginTop: 70 }}>
                     <TouchableOpacity
-                        keyExtractor={data => String(data.key)}
-                        onPress={() => addItemCart(data)}
+                        keyExtractor={data=> String(data.key)}
+                        onPress={() => addItemCart(cartData)}
                         style={styles.addCartButton}>
                         <Text style={{ fontSize: 18, color: "white", fontWeight: "bold" }}>Adicionar ao </Text>
                         <View style={{ width: 10 }} />

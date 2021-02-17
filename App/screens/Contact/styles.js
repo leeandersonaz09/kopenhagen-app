@@ -8,14 +8,14 @@ const styles = StyleSheet.create({
   
   headerTitle: {
     fontSize: fonts.header,
-    color: colors.brown,
+    color: colors.yellow,
     fontWeight: "bold",
   },
 
   HeaderBackGround: {
     height: 70,
     width:metrics.screenWidth,
-    backgroundColor:colors.primary
+    backgroundColor:colors.black
   },
 
   svgCurve: {

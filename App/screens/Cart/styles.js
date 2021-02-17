@@ -1,39 +1,79 @@
 import { StyleSheet } from 'react-native';
 
-import {metrics, colors, fonts }from '../../styles';
+import { metrics, colors, fonts } from '../../styles';
 
 export default StyleSheet.create({
-	container: { 
-		flex: 1, 
-		justifyContent: 'center', 
-		alignItems: 'center', 
-		backgroundColor: '#f1f1f1' 
+	container: {
+		flex: 1,
+		backgroundColor: colors.white,
 	},
-	textMessage: { 
-		color: 'red', 
-		fontSize: 16 
+	container2: {
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center',
 	},
-	totalContainer:{
-		flex:1,
-		backgroundColor:colors.white,
-		paddingHorizontal:29,
+	headerTitle: {
+		fontSize: fonts.header,
+		color: colors.yellow,
+		fontWeight: "bold",
+		marginBottom:20
 	},
-	totalSection:{
-		marginTop:20
+	textMessage: {
+		color: 'red',
+		fontSize: 16
 	},
-	totalText:{
+	totalContainer: {
+		backgroundColor: colors.white,
+		paddingHorizontal: 28,
+		marginBottom: 100,
+	},
+	totalSection: {
+
+	},
+	totalText: {
 		fontSize: 28,
-		fontWeight:'bold'
+		fontWeight: 'bold'
 	},
-	subTotal:{
-		flexDirection:'row',
-		paddingHorizontal:20
-	
+	subTotalSection: {
+		flexDirection: 'row',
+		alignContent: 'space-between',
+		marginTop: 10,
 	},
-	textsubTotal:{
-		fontSize:20
+	textsubTotal: {
+		fontSize: 14,
 	},
-	pricesubTotal:{
-		fontSize:20
+	pricesubTotal: {
+		fontSize: 18,
+		fontWeight: 'bold',
+	},
+	divider: {
+		height: 1,
+		borderColor: '#dddd',
+		borderStyle: 'dashed',
+		borderWidth: 1,
+		alignSelf: 'stretch',
+		flex: 1,
+		marginHorizontal: 29,
+		marginTop: 12
+	},
+	buttonSection: {
+		textAlign: 'center',
+		alignItems: 'center',
+		marginTop: 29
+	},
+	Button: {
+		width: 200,
+		height: 45,
+		backgroundColor: '#000',
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: "center",
+		borderRadius: 80,
+		padding: 5,
+	},
+	textButton: {
+		fontSize: 18,
+		color: "white",
+		fontWeight: "bold",
 	}
 });

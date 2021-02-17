@@ -7,40 +7,51 @@ export default StyleSheet.create({
 		flexDirection:'row',
 		alignContent:'space-between',
 		flex:1,
-		paddingHorizontal:15
+		paddingHorizontal:8
 	},
 	card:{
 		flexDirection:'row',
 	},
+	headerSection:{
+		flex:1,
+		flexWrap: 'wrap'
+	},
 	image:{
-		width:124,
-		height:121,
+		width:118,
+		height:120,
 		borderRadius:20,
 		borderWidth:1,
-		borderColor:"#000"
+		borderColor:"#D1D1D1"
 	},
 	titleSection:{
 		marginLeft:16,
+		marginHorizontal:10,
 		alignContent:'space-between',
+		flex:1,
 	},
 	titleName:{
 		fontSize: fonts.headerTittle,
-		fontWeight:'bold'
+		fontWeight:'bold', 
+		flexWrap:'wrap',
+		paddingBottom:10
 	},
 	description: {
-		fontSize:fonts.regular,
-		color:colors.brown,
+		fontSize:fonts.header,
+		color:colors.brown2,
+		fontWeight:'bold'
 	},
 	actions:{
 		alignContent:'space-around',
 		flexDirection:'row',
 		width:95,
 		height:30,
-		marginTop:40
+		marginTop:20
 	},
 	priceSection:{
-		paddingLeft:(metrics.screenWidth/2) - 135,
-		justifyContent:'space-between'
+		paddingLeft:(metrics.screenWidth/2) - 30,
+		justifyContent:'space-between',
+		alignItems:'center',
+		paddingTop:10
 
 	},
 	price:{
@@ -65,5 +76,13 @@ export default StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 
+	},
+	Button:{
+
+	},
+	textButton:{ 
+		fontSize: 18, 
+		color: "white", 
+		fontWeight: "bold",
 	}
 });

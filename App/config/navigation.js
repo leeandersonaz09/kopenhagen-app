@@ -112,7 +112,6 @@ const AppTabsScreen = () => (
       name="Tab2"
       component={CartScreen}
       options={{
-        tabBarLabel: 'Carrinho',
         tabBarIcon: ({ color }) => (
           <View>
             <MaterialCommunityIcons name="cart" color={color} size={26} />

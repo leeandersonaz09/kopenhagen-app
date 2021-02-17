@@ -5,34 +5,49 @@ import styles from './styles';
 
 import { MaterialIcons } from '@expo/vector-icons';
 
-
-export default function Item({ item, removeItemCart }) {
+export default function Item({ item, removeItemCart, onChangeQuan }) {
 	return (
 		<SafeAreaView >
 			<ScrollView>
 				<View style={styles.content}>
 					<View style={styles.card}>
-						<Image style={styles.image} source={{ uri: item.img }} />
+						<Image style={styles.image} source={{ uri: item.data.img }} />
+						
 						<View style={styles.titleSection}>
-							<View>
-								<Text style={styles.titleName}>Titulo</Text>
-								<Text style={styles.description}>descricao</Text>
+							
+							<View style={styles.headerSection}>
+								<Text numberOfLines={1} style={styles.titleName}>{item.data.tittle}</Text>
+								<Text numberOfLines={1} style={styles.description}>R${item.data.price}</Text>
 							</View>
+							
 							<View style={styles.actions}>
-								<Text style={styles.caption}> -- </Text>
-								<Text style={styles.caption}> 1 </Text>
-								<Text style={styles.caption}> + </Text>
+								<TouchableOpacity
+									style={styles.Button}>
+									<MaterialIcons name="remove" color="#000" size={28} />
+								</TouchableOpacity>
+
+								<Text style={styles.caption}> {item.quantity}</Text>
+
+								<TouchableOpacity
+									onPress={() => onChangeQuan(item, false)}
+									style={styles.Button}>
+									<MaterialIcons name="add" color="#000" size={28} />
+								</TouchableOpacity>
+							
 							</View>
+
 						</View>
 					</View>
+					
 					<View style={styles.priceSection}>
-						<Text style={styles.price}>R${item.price}</Text>
+						<View />
 						<View style={styles.removeCart}>
-							<TouchableOpacity style={styles.btn} onPress={() => removeItemCart(item)}>
+							<TouchableOpacity style={styles.btn} onPress={() => removeItemCart(item.data)}>
 								<MaterialIcons name="delete" color="#ffff" size={24} />
 							</TouchableOpacity>
 						</View>
 					</View>
+
 				</View>
 			</ScrollView>
 		</SafeAreaView>
