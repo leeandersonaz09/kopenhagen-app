@@ -27,7 +27,7 @@ export default function Item({ item, removeItemCart }) {
 			total = stotal * cantd;
 			total = total.toFixed(2);
 			console.log(total)
-			increaseTotal(total)
+
 
 		}
 		else if (type == false && cantd >= 2) {
@@ -36,7 +36,7 @@ export default function Item({ item, removeItemCart }) {
 			total = stotal * cantd;
 			total = total.toFixed(2);
 			console.log(total)
-			increaseTotal(total)
+
 		}
 		else if (type == false && cantd == 1) {
 			cantd = 1;
@@ -44,7 +44,7 @@ export default function Item({ item, removeItemCart }) {
 			total = stotal;
 			total = total.toFixed(2);
 			console.log(total)
-			increaseTotal(total)
+
 		}
 	}
 

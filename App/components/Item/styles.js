@@ -30,7 +30,7 @@ export default StyleSheet.create({
 		flex:1,
 	},
 	titleName:{
-		fontSize: fonts.headerTittle,
+		fontSize: fonts.regular,
 		fontWeight:'bold', 
 		flexWrap:'wrap',
 		paddingBottom:10
