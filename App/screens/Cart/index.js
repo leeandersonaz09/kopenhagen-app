@@ -14,8 +14,8 @@ import { Header } from '../../components';
 
 export default function Cart() {
 	const cart = useSelector((state) => state.cart);
-	const dispatch = useDispatch();
 
+	const dispatch = useDispatch();
 
 	function removeItemCart(item) {
 		console.log(item.key);
@@ -28,6 +28,7 @@ export default function Cart() {
 	}
 
 	function onChangeQuan(i, type) {
+
 		const dataCar = cart
 		//console.log(cart[i].quality)
 		//let cantd = dataCar[i].quality;
@@ -64,7 +65,7 @@ export default function Cart() {
 							style={{ padding: 10 }}
 							keyExtractor={(item) => String(item.data.key)}
 							data={cart}
-							renderItem={({ item }) => <Item item={item} removeItemCart={removeItemCart} onChangeQuan={onChangeQuan} />}
+							renderItem={({ item }) => <Item item={item}  removeItemCart={removeItemCart} onChangeQuan={onChangeQuan} />}
 						/>
 						<View style={styles.totalContainer}>
 
@@ -75,7 +76,7 @@ export default function Cart() {
 								<View style={styles.subTotalSection}>
 									<Text style={styles.textsubTotal}>Sub Total</Text>
 									<View style={styles.divider} />
-									<Text style={styles.pricesubTotal}>R$50</Text>
+									<Text style={styles.pricesubTotal}>R$50,00</Text>
 								</View>
 
 								<View style={styles.subTotalSection}>

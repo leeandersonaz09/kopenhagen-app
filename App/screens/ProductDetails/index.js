@@ -29,7 +29,6 @@ function ProductDetails({ route, navigation }) {
 
     function addItemCart(item) {
 		dispatch(addItem(item));
-        console.log(item)
 
 		showMessage({
 			message: `${item.data.tittle} adicioando com sucesso`,
@@ -49,7 +48,7 @@ function ProductDetails({ route, navigation }) {
 
                 <View style={{ textAlign: 'center', alignItems: 'center', marginTop: 70 }}>
                     <TouchableOpacity
-                        keyExtractor={data=> String(data.key)}
+                        keyExtractor={index=> String(index)}
                         onPress={() => addItemCart(cartData)}
                         style={styles.addCartButton}>
                         <Text style={{ fontSize: 18, color: "white", fontWeight: "bold" }}>Adicionar ao </Text>
