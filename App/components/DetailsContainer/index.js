@@ -19,7 +19,7 @@ function DetailsContainer({ item, addItemCart }) {
             <ScrollView>
                 <View style={{ alignItems: 'center', marginHorizontal: 30 }}>
                     <Image style={styles.productImg} source={{ uri: item.img }} />
-                    <Text style={styles.name}>{item.tittle}</Text>
+                    <Text style={styles.name}>{item.title}</Text>
                     <Text style={styles.price}>R${item.price}</Text>
                     <Text style={styles.description}>{item.description}</Text>
                 </View>

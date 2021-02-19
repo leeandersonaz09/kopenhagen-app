@@ -11,7 +11,7 @@ const Contact = () => {
   const cardData = [
     {
       key: "2",
-      tittle: "Email",
+      title: "Email",
       link: 'mailto:contatoessensiaf@gmail.com',
       iconName: "ios-mail-open",
       iconColor: colors.red,
@@ -19,7 +19,7 @@ const Contact = () => {
     },
     {
       key: "3",
-      tittle: "Whatsapp",
+      title: "Whatsapp",
       link: 'https://api.whatsapp.com/send?phone=5574988276002&text=Ol%C3%A1%20Anna%2C%20gostaria%20de%20tirar%20uma%20d%C3%BAvida%20ou%20fazer%20um%20pedido.',
       iconName: "logo-whatsapp",
       iconColor: colors.green,
@@ -27,7 +27,7 @@ const Contact = () => {
     },
     {
       key: "4",
-      tittle: "Facebook",
+      title: "Facebook",
       link: 'https://www.facebook.com/Ess%C3%AAncia-Feminina-2011941432372832/',
       iconName: "logo-facebook",
       iconColor: colors.facebook,
@@ -35,7 +35,7 @@ const Contact = () => {
     },
     {
       key: "5",
-      tittle: "Instagram",
+      title: "Instagram",
       link: 'https://www.instagram.com/essencia_f/',
       iconName: "logo-instagram",
       iconColor: colors.red,
@@ -68,7 +68,7 @@ const Contact = () => {
           <View style={styles.CardContent}>
             <Thumbnail source={require('../../../assets/avatar.png')} />
             <View style={styles.TextContent}>
-              <Text style={styles.tittle}>Essência Feminina</Text>
+              <Text style={styles.title}>Essência Feminina</Text>
               <Text style={styles.text}>A loja mais completa! Atacado e varejo. Nos siga nas redes sociais e caso tenha dúvida, nos contate!</Text>
             </View>
           </View>
@@ -85,7 +85,7 @@ const Contact = () => {
                 <View style={styles.CardContent}>
                   <Icon style={[styles.Icon, { color: item.iconColor }]} name={item.iconName} />
                   <View style={styles.TextContent}>
-                    <Text style={styles.tittle}>{item.tittle}</Text>
+                    <Text style={styles.title}>{item.title}</Text>
                     <Text style={styles.text}>{item.text}</Text>
                   </View>
                 </View>

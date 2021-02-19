@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     flex:1
   },
 
-  tittle: {
+  title: {
     fontWeight: 'bold',
     fontFamily: 'SFProDisplay_bold',
     fontSize: fonts.header,

@@ -56,7 +56,7 @@ export default StyleSheet.create({
 	},
 	price:{
 		textAlign:'right',
-		fontSize:fonts.headerTittle,
+		fontSize:fonts.headertitle,
 		color: colors.brown2,
 	},
 	caption:{

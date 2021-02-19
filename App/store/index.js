@@ -1,11 +1,14 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 
-import rootCars from './ducks/cars';
-import rootCart from './ducks/cart';
+import cart from "./cart";
+import products from "./products";
 
 export default configureStore({
-	reducer: {
-		cars: rootCars,
-		cart: rootCart
-	}
+  reducer: {
+    cart,
+    products,
+  },
+  middleware: getDefaultMiddleware({
+    serializableCheck: false,
+  }),
 });

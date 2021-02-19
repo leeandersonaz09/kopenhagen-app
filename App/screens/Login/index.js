@@ -174,7 +174,7 @@ export default ({ navigation }) => {
 
       <Image style={styles.Image} source={logo} />
 
-      <Text style={styles.tittle}>DescontoFacilApp</Text>
+      <Text style={styles.title}>DescontoFacilApp</Text>
 
       <View style={styles.form}>
         <Text style={styles.label}>SEU EMAIL *</Text>
@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
     marginTop: 0
   },
 
-  tittle: {
+  title: {
     fontWeight: 'bold',
     marginTop: 5,
     marginBottom: 10,

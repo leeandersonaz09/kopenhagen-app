@@ -5,7 +5,7 @@ import { View, Text, ImageBackground } from 'react-native';
 
 import styles from './styles';
 
-const Category = ({ data: { img, tittle } }) => (
+const Category = ({ data: { img, title } }) => (
   <>
     <View style={styles.container}>
       <ImageBackground
@@ -15,7 +15,7 @@ const Category = ({ data: { img, tittle } }) => (
       >
         <View style={styles.darkOverlay}></View>
         <View style={styles.TextImageContainer}>
-          <Text style={styles.TextImage}>{tittle}</Text>
+          <Text style={styles.TextImage}>{title}</Text>
         </View>
       </ImageBackground>
     </View>

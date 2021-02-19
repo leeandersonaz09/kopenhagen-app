@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, SafeAreaView, TouchableOpacity } from 'react-native';
 
-//import { useSelector, useDispatch } from 'react-redux';
-//import { removeItem } from '../../store/ducks/cart';
-import { bindActionCreators } from 'redux'
-import {connect} from 'react-redux';
-import {deleteFromCart, updateItemUnits} from '../../actions/cartActions';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { removeItem } from '../../store/ducks/cart';
 import Item from '../../components/Item';
 import { Icon } from 'native-base';
 
@@ -16,43 +12,44 @@ import styles from './styles';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Header } from '../../components';
 
-const Cart = (props) => {
-
-	const cart = props.cart;
-	console.log(cart);
-	/*const cart = useSelector((state) => state.cart);
+export default function Cart() {
+	const cart = useSelector((state) => state.cart);
 
 	const dispatch = useDispatch();
 
 	function removeItemCart(item) {
-		console.log(item.id);
+		console.log(item);
 		dispatch(removeItem(item.id));
 
 		showMessage({
-			message: `${item.tittle} excluido com sucesso`,
+			message: `${item.title} excluido com sucesso`,
 			type: 'warning'
 		});
 	}
 
-	*/
+	function onChangeQuan(i, type) {
 
-	function handleDeleteFromCart(id) {
-        deleteFromCart({id})
-		showMessage({
-			message: `${item.tittle} excluido com sucesso`,
-			type: 'warning'
-		});
-    }
-    function handleDeductUnit(id) {
-        let units = -1;
-        updateItemUnits({id, units})
-    }
-	function handleAddUnit(id) {
-        let units = 1;
-        updateItemUnits({id, units})
-    }
+		const dataCar = cart
+		//console.log(cart[i].quality)
+		//let cantd = dataCar[i].quality;
 
-	
+		return
+		if (type) {
+			cantd = cantd + 1
+			dataCar[i].quality = cantd
+			this.setState({ dataCart: dataCar })
+		}
+		else if (type == false && cantd >= 2) {
+			cantd = cantd - 1
+			dataCar[i].quality = cantd
+			this.setState({ dataCart: dataCar })
+		}
+		else if (type == false && cantd == 1) {
+			dataCar.splice(i, 1)
+			this.setState({ dataCart: dataCar })
+		}
+	}
+
 	return (
 		<React.Fragment>
 			<SafeAreaView style={styles.container}>
@@ -68,7 +65,7 @@ const Cart = (props) => {
 							style={{ padding: 10 }}
 							keyExtractor={(item) => String(item.id)}
 							data={cart}
-							renderItem={({ item }) => <Item item={item} key={item.id} removeItemCart={()=>handleDeleteFromCart(item.id)}  onAddUni={()=>handleAddUnit(item.id)} onDeductUnit={()=>handleDeductUnit(item.id)} />}
+							renderItem={({ item }) => <Item item={item}  removeItemCart={()=>removeItemCart(item)} />}
 						/>
 						<View style={styles.totalContainer}>
 
@@ -118,18 +115,3 @@ const Cart = (props) => {
 		</React.Fragment>
 	);
 }
-
-function mapStateToProps(state) {
-    return {
-        cart: state.cart
-    }
-}
-
-function mapActionsToProps(dispatch) {
-    return bindActionCreators({
-        deleteFromCart,
-        updateItemUnits
-    }, dispatch);
-}
-
-export default connect(mapStateToProps, mapActionsToProps)(Cart);

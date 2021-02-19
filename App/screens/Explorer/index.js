@@ -75,14 +75,13 @@ function Explorer({ route, navigation }) {
                 id: doc.id,
                 img,
                 description,
-                tittle,
+                title:tittle,
                 price,
                 data,
               });
             });
 
             setdataBackup(list);
-            console.log(list)
             setdocumentData(list);
             setTimeout(() => {
               setLoading(false);
@@ -123,7 +122,7 @@ function Explorer({ route, navigation }) {
               id: doc.id,
               img,
               description,
-              tittle,
+              title:tittle,
               price,
               data,
             });
@@ -158,7 +157,7 @@ function Explorer({ route, navigation }) {
     setQuery(text);
 
     const newData = dataBackup.filter(item => {
-      const itemData = `${item.data.toUpperCase()} ${item.tittle.toUpperCase()} ${item.price.toUpperCase()} ${item.size.toUpperCase()} ${item.description.toUpperCase()}`;
+      const itemData = `${item.data.toUpperCase()} ${item.title.toUpperCase()} ${item.price.toUpperCase()} ${item.size.toUpperCase()} ${item.description.toUpperCase()}`;
       const textData = text.toUpperCase();
 
       return itemData.indexOf(textData) > -1;
@@ -181,7 +180,7 @@ function Explorer({ route, navigation }) {
   const renderItens = (item, index) => {
     return (
       <>
-        <View key={item} style={{ backgroundColor: '#fff' }}>
+        <View key={item.id} style={{ backgroundColor: '#fff' }}>
           <TouchableOpacity
             onPress={() => navigation.push('Detalhes', item, )}
           >

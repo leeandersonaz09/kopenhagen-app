@@ -1,4 +1,3 @@
-"use strict";
 import React, { useEffect, useState } from 'react';
 import {
     Text,
@@ -9,64 +8,45 @@ import {
 } from 'react-native';
 //import AsyncStorage from '@react-native-async-storage/async-storage';
 
-//import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
-//import { addItem } from '../../store/ducks/cart';
+import { addItem } from "../../store/cart";
 
 import { showMessage } from 'react-native-flash-message';
 import { Icon} from 'native-base';
 import styles from './styles';
-//Redux
-import { bindActionCreators } from 'redux'
-import {connect} from 'react-redux';
-import {addToCart} from '../../actions/cartActions'
 
 
+function ProductDetails({ route, navigation }) {
 
-const ProductDetails =({ route, navigation, props })=> {
-    /* 
     const dispatch = useDispatch();
-    2. Get the param 
+    /* 2. Get the param */
+    const data = route.params;
     
-    const cartData = {
-        data: data,
-        quantity:  1,
-    };
-
     function addItemCart(item) {
+        console.log(item)
 		dispatch(addItem(item));
 
 		showMessage({
-			message: `${item.data.tittle} adicioando com sucesso`,
+			message: `${item.title} adicioando com sucesso`,
 			type: 'success'
 		});
 	}
-    */
-
-    const data = route.params;
-    
-    function dispachAddToCart(product) {
-        addToCart(product);
-        showMessage({
-			message: `${product.tittle} adicioando com sucesso`,
-			type: 'success'
-		});
-    }
 
     return (
         <View style={styles.container}>
             <ScrollView>
                 <View style={{ alignItems: 'center', marginHorizontal: 30 }}>
                     <Image style={styles.productImg} source={{ uri: data.img }} />
-                    <Text style={styles.name}>{data.tittle}</Text>
+                    <Text style={styles.name}>{data.title}</Text>
                     <Text style={styles.price}>R${data.price}</Text>
                     <Text style={styles.description}>{data.description}</Text>
                 </View>
 
                 <View style={{ textAlign: 'center', alignItems: 'center', marginTop: 70 }}>
                     <TouchableOpacity
-                        keyExtractor={index=> String(index)}
-                        onPress={() => dispachAddToCart(data)}
+                        key={data.id}
+                        onPress={() => addItemCart(data)}
                         style={styles.addCartButton}>
                         <Text style={{ fontSize: 18, color: "white", fontWeight: "bold" }}>Adicionar ao </Text>
                         <View style={{ width: 10 }} />
@@ -76,14 +56,6 @@ const ProductDetails =({ route, navigation, props })=> {
             </ScrollView>
         </View>
     );
-
-   
 }
 
-function mapActionsToProps(dispatch) {
-    return bindActionCreators({
-        addToCart
-    }, dispatch);
-}
-
-export default connect(mapActionsToProps)(ProductDetails);
+export default ProductDetails;

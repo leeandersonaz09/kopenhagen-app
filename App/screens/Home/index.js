@@ -15,49 +15,49 @@ export default function Home({ navigation }) {
           key: 1,
           img: require('../../assets/01.png'),
           category: "classicos",
-          tittle: "Clássicos"
+          title: "Clássicos"
         },
         {
           key: 2,
           img: require('../../assets/02.png'),
           category: "infantil",
-          tittle: "Infantil"
+          title: "Infantil"
         },
         {
           key: 3,
           img: require('../../assets/03.png'),
           category: "soulgood",
-          tittle: "Soul Good"
+          title: "Soul Good"
         },
         {
           key: 4,
           img: require('../../assets/04.png'),
           category: "variedades",
-          tittle: "Variedades"
+          title: "Variedades"
         },
         {
           key: 5,
           img: require('../../assets/05.png'),
           category: "presentes",
-          tittle: "Presentes"
+          title: "Presentes"
         },
         {
           key: 6,
           img: require('../../assets/06.png'),
           category: "keepkop",
-          tittle: "Keepkop"
+          title: "Keepkop"
         },
         {
           key: 7,
           img: require('../../assets/07.png'),
           category: "tabletes",
-          tittle: "Tabletes"
+          title: "Tabletes"
         },
         {
           key: 8,
           img: require('../../assets/08.png'),
           category: "outros",
-          tittle: "Outros"
+          title: "Outros"
         },
       ]
     )

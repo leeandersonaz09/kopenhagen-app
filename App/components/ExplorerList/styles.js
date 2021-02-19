@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     flex: 1, 
   },
-  tittle: {
+  title: {
     textAlign: 'left',
     fontWeight: 'bold',
     color: '#333',
