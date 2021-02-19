@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, SafeAreaView, TouchableOpacity } from 'react-native';
-
+//Redux
 import { useSelector, useDispatch } from 'react-redux';
-import { removeItem } from '../../store/ducks/cart';
+import {
+	calculateTotalSelector,
+	removeItem,
+	incrementItem,
+	decrementItem,
+	itemsCartSelector,
+} from "../../store/cart";
+
 import Item from '../../components/Item';
 import { Icon } from 'native-base';
 
@@ -13,12 +20,13 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { Header } from '../../components';
 
 export default function Cart() {
-	const cart = useSelector((state) => state.cart);
 
+	const cart = useSelector(itemsCartSelector);
+	let total = useSelector(calculateTotalSelector).toFixed(2);
 	const dispatch = useDispatch();
 
 	function removeItemCart(item) {
-		console.log(item);
+		//console.log(item.id);
 		dispatch(removeItem(item.id));
 
 		showMessage({
@@ -27,26 +35,13 @@ export default function Cart() {
 		});
 	}
 
-	function onChangeQuan(i, type) {
+	function onChangeQuan(item, type) {
 
-		const dataCar = cart
-		//console.log(cart[i].quality)
-		//let cantd = dataCar[i].quality;
-
-		return
 		if (type) {
-			cantd = cantd + 1
-			dataCar[i].quality = cantd
-			this.setState({ dataCart: dataCar })
+			dispatch(incrementItem(item));
 		}
-		else if (type == false && cantd >= 2) {
-			cantd = cantd - 1
-			dataCar[i].quality = cantd
-			this.setState({ dataCart: dataCar })
-		}
-		else if (type == false && cantd == 1) {
-			dataCar.splice(i, 1)
-			this.setState({ dataCart: dataCar })
+		else if (type == false && item.quantity >= 2) {
+			dispatch(decrementItem(item))
 		}
 	}
 
@@ -65,7 +60,11 @@ export default function Cart() {
 							style={{ padding: 10 }}
 							keyExtractor={(item) => String(item.id)}
 							data={cart}
-							renderItem={({ item }) => <Item item={item}  removeItemCart={()=>removeItemCart(item)} />}
+							renderItem={({ item }) => <Item
+								item={item}
+								onDecrement={() => onChangeQuan(item, false)}
+								onIncrement={() => onChangeQuan(item, true)}
+								removeItemCart={() => removeItemCart(item)} />}
 						/>
 						<View style={styles.totalContainer}>
 
@@ -76,7 +75,7 @@ export default function Cart() {
 								<View style={styles.subTotalSection}>
 									<Text style={styles.textsubTotal}>Sub Total</Text>
 									<View style={styles.divider} />
-									<Text style={styles.pricesubTotal}>R$50,00</Text>
+									<Text style={styles.pricesubTotal}>R${total}</Text>
 								</View>
 
 								<View style={styles.subTotalSection}>
@@ -88,7 +87,7 @@ export default function Cart() {
 								<View style={styles.subTotalSection}>
 									<Text style={styles.textsubTotal}>Total</Text>
 									<View style={styles.divider} />
-									<Text style={styles.pricesubTotal}>R$60</Text>
+									<Text style={styles.pricesubTotal}>R${total}</Text>
 								</View>
 
 							</View>

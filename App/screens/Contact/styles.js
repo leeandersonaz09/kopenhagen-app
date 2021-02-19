@@ -1,60 +1,28 @@
-import { StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import { colors, fonts, metrics } from '../../styles';
 
 const styles = StyleSheet.create({
   Container: {
-    flex:1
+    flex: 1,
+    backgroundColor: colors.white
   },
-  
-  headerTitle: {
-    fontSize: fonts.header,
-    color: colors.yellow,
-    fontWeight: "bold",
+  headerImage: {
+    width: "100%",
+    height: 300,
   },
-
-  HeaderBackGround: {
-    height: 70,
-    width:metrics.screenWidth,
-    backgroundColor:colors.black
-  },
-
-  svgCurve: {
-    position: 'absolute',
-    width: metrics.screenWidth
-  },
-
-  Content: {
-    marginHorizontal: 10,
-    marginTop: -50,
-
-  },
-
-  CardContent: {
-    flexDirection: 'row',
-    
-  },
-
-  TextContent: {
-    marginLeft: 12,
-    flex:1
-  },
-
-  title: {
-    fontWeight: 'bold',
-    fontFamily: 'SFProDisplay_bold',
-    fontSize: fonts.header,
-  },
-
-  text: {
-    fontFamily: 'SFProDisplay_regular',
-    textAlign:'justify' 
-  },
-
-  Icon: {
-    fontSize: 50,
-    color: colors.blue
+  content: {
+    backgroundColor:colors.white,
+    position: 'relative',
+    left: 0, top: -50,
+    borderTopStartRadius: 40,
+    borderTopEndRadius: 40,
+    shadowOffset: { width: 1, height: 1 },
+    shadowColor: '#333',
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    paddingTop: 50,
   }
-  
+
 });
 
 export default styles;

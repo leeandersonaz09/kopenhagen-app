@@ -10,10 +10,13 @@ export class CartItem {
 const INITIAL_STATE = {
   items: [],
   value: 0,
-};
+};//
 
 export const addItem = createAction("CART/ADD_ITEM");
 export const increment = createAction("CART/INCREMENT");
+export const incrementItem = createAction("CART/INCREMENT_ITEM");
+export const decrementItem = createAction("CART/DECREMENT_ITEM");
+export const removeItem = createAction('CART/REMOVE_ITEM');
 
 export default createReducer(INITIAL_STATE, {
   [addItem]: (state, action) => ({
@@ -21,6 +24,16 @@ export default createReducer(INITIAL_STATE, {
     items: verifyExistItem(state, action),
   }),
   [increment]: (state) => ({ ...state, value: state.value + 1 }),
+  [removeItem]: (state, action) => ({
+    items: state.items.filter((item) => item.id !== action.payload)
+  }),
+  [incrementItem]: (state, action) => ({
+    items : incMapItens(state, action),
+  }),
+  [decrementItem]: (state, action) => ({
+    items : decMapItens(state, action),
+  })
+
 });
 
 function verifyExistItem(state, action) {
@@ -37,6 +50,26 @@ function verifyExistItem(state, action) {
   }
 
   return [...state.items, newItem];
+}
+
+function incMapItens(state, action){
+  
+  return state.items.map((item)=>{
+    return item.id === action.payload.id 
+    ? { ...item, quantity: item.quantity + 1 } :
+    item;
+  })
+
+}
+
+function decMapItens(state, action){
+  
+  return state.items.map((item)=>{
+    return item.id === action.payload.id 
+    ? { ...item, quantity: item.quantity - 1 } :
+    item;
+  })
+
 }
 
 export const cartQuantitySelector = (state) => state.cart.items.length;

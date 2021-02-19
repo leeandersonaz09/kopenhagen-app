@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 //import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { addItem } from "../../store/cart";
 
@@ -24,7 +24,7 @@ function ProductDetails({ route, navigation }) {
     const data = route.params;
     
     function addItemCart(item) {
-        console.log(item)
+        //console.log(item)
 		dispatch(addItem(item));
 
 		showMessage({

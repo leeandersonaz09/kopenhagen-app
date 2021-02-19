@@ -5,48 +5,7 @@ import styles from './styles';
 
 import { MaterialIcons } from '@expo/vector-icons';
 
-export default function Item({ item, removeItemCart }) {
-
-	const [quantity, setQuantity] = useState(1);
-
-	function onChangeQuan(type, value) {
-		let cantd = quantity;
-		let stotal = parseFloat(value);
-		let total = stotal;
-
-		/*
-			useSelector((state)=>{
-				total : total: state.items.replace((subtotal, item) => subtotal + item.price, 0)
-			})
-		*/
-
-
-		if (type) {
-			cantd = cantd + 1
-			setQuantity(cantd);
-			total = stotal * cantd;
-			total = total.toFixed(2);
-			console.log(total)
-
-
-		}
-		else if (type == false && cantd >= 2) {
-			cantd = cantd - 1
-			setQuantity(cantd);
-			total = stotal * cantd;
-			total = total.toFixed(2);
-			console.log(total)
-
-		}
-		else if (type == false && cantd == 1) {
-			cantd = 1;
-			setQuantity(cantd);
-			total = stotal;
-			total = total.toFixed(2);
-			console.log(total)
-
-		}
-	}
+export default function Item({ item, removeItemCart, onDecrement, onIncrement }) {
 
 	return (
 		<SafeAreaView >
@@ -64,14 +23,15 @@ export default function Item({ item, removeItemCart }) {
 
 							<View style={styles.actions}>
 								<TouchableOpacity
-			
+									onPress={()=>onDecrement()}
 									style={styles.Button}>
 									<MaterialIcons name="remove" color="#000" size={28} />
 								</TouchableOpacity>
 
-								<Text style={styles.caption}> {quantity}</Text>
+								<Text style={styles.caption}> {item.quantity}</Text>
 
 								<TouchableOpacity
+									onPress={()=>onIncrement()}
 									style={styles.Button}>
 									<MaterialIcons name="add" color="#000" size={28} />
 								</TouchableOpacity>
@@ -95,49 +55,3 @@ export default function Item({ item, removeItemCart }) {
 		</SafeAreaView>
 	);
 }
-
-/*
-			<View style={styles.container}>
-				<Image style={styles.image} source={{ uri: item.img }} />
-				<View style={styles.description}>
-					<Text style={styles.title}>Nome do Carro</Text>
-					<Text style={styles.titleName}>{item.title}</Text>
-				</View>
-				<TouchableOpacity style={styles.btn} onPress={() => removeItemCart(item)}>
-					<MaterialIcons name="remove-shopping-cart" color="#ff0000" size={24} />
-				</TouchableOpacity>
-			</View>
-
-	container: {
-	height: 80,
-	borderWidth: 1,
-	borderColor: '#ccc',
-	borderRadius: 5,
-	marginBottom: 10,
-	flexDirection: 'row',
-	justifyContent: 'space-between'
-	},
-	image: {
-		height: 80,
-		width: 100,
-		borderTopLeftRadius: 5,
-		borderBottomLeftRadius: 5
-	},
-	description: {
-		flex: 2,
-		padding: 10
-	},
-	title: {
-		fontWeight: 'bold',
-		fontSize: 18
-	},
-	titleName: {
-		color: 'gray'
-	},
-	btn: {
-		width: 50,
-		justifyContent: 'center',
-		alignItems: 'center'
-	}
-
-*/
