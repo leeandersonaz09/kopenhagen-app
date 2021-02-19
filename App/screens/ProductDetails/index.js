@@ -1,3 +1,4 @@
+"use strict";
 import React, { useEffect, useState } from 'react';
 import {
     Text,
@@ -8,20 +9,25 @@ import {
 } from 'react-native';
 //import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { useSelector, useDispatch } from 'react-redux';
+//import { useSelector, useDispatch } from 'react-redux';
 
-import { addItem } from '../../store/ducks/cart';
+//import { addItem } from '../../store/ducks/cart';
 
 import { showMessage } from 'react-native-flash-message';
 import { Icon} from 'native-base';
 import styles from './styles';
+//Redux
+import { bindActionCreators } from 'redux'
+import {connect} from 'react-redux';
+import {addToCart} from '../../actions/cartActions'
 
 
-function ProductDetails({ route, navigation }) {
 
+const ProductDetails =({ route, navigation, props })=> {
+    /* 
     const dispatch = useDispatch();
-    /* 2. Get the param */
-    const data = route.params;
+    2. Get the param 
+    
     const cartData = {
         data: data,
         quantity:  1,
@@ -35,6 +41,17 @@ function ProductDetails({ route, navigation }) {
 			type: 'success'
 		});
 	}
+    */
+
+    const data = route.params;
+    
+    function dispachAddToCart(product) {
+        addToCart(product);
+        showMessage({
+			message: `${product.tittle} adicioando com sucesso`,
+			type: 'success'
+		});
+    }
 
     return (
         <View style={styles.container}>
@@ -49,7 +66,7 @@ function ProductDetails({ route, navigation }) {
                 <View style={{ textAlign: 'center', alignItems: 'center', marginTop: 70 }}>
                     <TouchableOpacity
                         keyExtractor={index=> String(index)}
-                        onPress={() => addItemCart(cartData)}
+                        onPress={() => dispachAddToCart(data)}
                         style={styles.addCartButton}>
                         <Text style={{ fontSize: 18, color: "white", fontWeight: "bold" }}>Adicionar ao </Text>
                         <View style={{ width: 10 }} />
@@ -59,6 +76,14 @@ function ProductDetails({ route, navigation }) {
             </ScrollView>
         </View>
     );
+
+   
 }
 
-export default ProductDetails;
+function mapActionsToProps(dispatch) {
+    return bindActionCreators({
+        addToCart
+    }, dispatch);
+}
+
+export default connect(mapActionsToProps)(ProductDetails);

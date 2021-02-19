@@ -72,7 +72,7 @@ function Explorer({ route, navigation }) {
 
               const { img, tittle, description, price, data } = doc.data();
               list.push({
-                key: doc.id,
+                id: doc.id,
                 img,
                 description,
                 tittle,
@@ -82,6 +82,7 @@ function Explorer({ route, navigation }) {
             });
 
             setdataBackup(list);
+            console.log(list)
             setdocumentData(list);
             setTimeout(() => {
               setLoading(false);
@@ -119,7 +120,7 @@ function Explorer({ route, navigation }) {
 
             const { img, tittle, description, price, data } = doc.data();
             list.push({
-              key: doc.id,
+              id: doc.id,
               img,
               description,
               tittle,
@@ -180,7 +181,7 @@ function Explorer({ route, navigation }) {
   const renderItens = (item, index) => {
     return (
       <>
-        <View key={index} style={{ backgroundColor: '#fff' }}>
+        <View key={item} style={{ backgroundColor: '#fff' }}>
           <TouchableOpacity
             onPress={() => navigation.push('Detalhes', item, )}
           >
@@ -251,7 +252,7 @@ function Explorer({ route, navigation }) {
             // On End Reached (Takes a function)
             onEndReached={() => retrieveMore()}
             onEndReachedThreshold={0.1}
-            keyExtractor={item => item.key}
+            keyExtractor={item => item.id}
             refreshing={refreshing}
             ListFooterComponent={() => renderFooter()}
           />

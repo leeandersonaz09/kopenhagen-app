@@ -1,3 +1,4 @@
+"use strict";
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, SafeAreaView } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -5,48 +6,11 @@ import styles from './styles';
 
 import { MaterialIcons } from '@expo/vector-icons';
 
-export default function Item({ item, removeItemCart }) {
+export default function Item({ item, removeItemCart, onAddUnit, onDeductUnit }) {
 
-	const [quantity, setQuantity] = useState(1);
-
-	function onChangeQuan(type, value) {
-		let cantd = quantity;
-		let stotal = parseFloat(value);
-		let total = stotal;
-
-		/*
-			useSelector((state)=>{
-				total : total: state.items.replace((subtotal, item) => subtotal + item.price, 0)
-			})
-		*/
-
-
-		if (type) {
-			cantd = cantd + 1
-			setQuantity(cantd);
-			total = stotal * cantd;
-			total = total.toFixed(2);
-			console.log(total)
-
-
-		}
-		else if (type == false && cantd >= 2) {
-			cantd = cantd - 1
-			setQuantity(cantd);
-			total = stotal * cantd;
-			total = total.toFixed(2);
-			console.log(total)
-
-		}
-		else if (type == false && cantd == 1) {
-			cantd = 1;
-			setQuantity(cantd);
-			total = stotal;
-			total = total.toFixed(2);
-			console.log(total)
-
-		}
-	}
+	
+	
+	
 
 	return (
 		<SafeAreaView >
@@ -64,7 +28,7 @@ export default function Item({ item, removeItemCart }) {
 
 							<View style={styles.actions}>
 								<TouchableOpacity
-									onPress={() => onChangeQuan(false, item.data.price)}
+									onPress={() => onDeductUnit()}
 									style={styles.Button}>
 									<MaterialIcons name="remove" color="#000" size={28} />
 								</TouchableOpacity>
@@ -72,7 +36,7 @@ export default function Item({ item, removeItemCart }) {
 								<Text style={styles.caption}> {quantity}</Text>
 
 								<TouchableOpacity
-									onPress={() => onChangeQuan(true, item.data.price)}
+									onPress={() => onAddUnit()}
 									style={styles.Button}>
 									<MaterialIcons name="add" color="#000" size={28} />
 								</TouchableOpacity>
@@ -139,6 +103,50 @@ export default function Item({ item, removeItemCart }) {
 		width: 50,
 		justifyContent: 'center',
 		alignItems: 'center'
+	}
+
+
+
+
+	const [quantity, setQuantity] = useState(1);
+
+	function onChangeQuan(type, value) {
+		let cantd = quantity;
+		let stotal = parseFloat(value);
+		let total = stotal;
+	
+		
+			useSelector((state)=>{
+				total : total: state.items.replace((subtotal, item) => subtotal + item.price, 0)
+			})
+		
+
+
+		if (type) {
+			cantd = cantd + 1
+			setQuantity(cantd);
+			total = stotal * cantd;
+			total = total.toFixed(2);
+			console.log(total)
+
+
+		}
+		else if (type == false && cantd >= 2) {
+			cantd = cantd - 1
+			setQuantity(cantd);
+			total = stotal * cantd;
+			total = total.toFixed(2);
+			console.log(total)
+
+		}
+		else if (type == false && cantd == 1) {
+			cantd = 1;
+			setQuantity(cantd);
+			total = stotal;
+			total = total.toFixed(2);
+			console.log(total)
+
+		}
 	}
 
 */
