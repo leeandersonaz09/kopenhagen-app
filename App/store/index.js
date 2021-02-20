@@ -1,12 +1,12 @@
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 
 import cart from "./cart";
-import products from "./products";
+import users from "./users";
 
 export default configureStore({
   reducer: {
     cart,
-    products,
+    users,
   },
   middleware: getDefaultMiddleware({
     serializableCheck: false,

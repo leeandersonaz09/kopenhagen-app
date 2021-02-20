@@ -157,7 +157,7 @@ function Explorer({ route, navigation }) {
     setQuery(text);
 
     const newData = dataBackup.filter(item => {
-      const itemData = `${item.data.toUpperCase()} ${item.title.toUpperCase()} ${item.price.toUpperCase()} ${item.size.toUpperCase()} ${item.description.toUpperCase()}`;
+      const itemData = `${item.data.toUpperCase()} ${item.title.toUpperCase()} ${item.price.toUpperCase()} ${item.description.toUpperCase()}`;
       const textData = text.toUpperCase();
 
       return itemData.indexOf(textData) > -1;

@@ -4,8 +4,9 @@ import 'react-native-gesture-handler';
 //import navigators
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
-
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+// import AsyncStorage
+import AsyncStorage from '@react-native-community/async-storage';
 //icons and fonts
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Ionicons } from "@expo/vector-icons";
@@ -16,6 +17,9 @@ import Loading from "../screens/Loading";
 import ExplorerScreen from "../screens/Explorer";
 import ProductDetails from "../screens/ProductDetails";
 import CartScreen from "../screens/Cart";
+
+import "firebase/auth";
+import * as firebase from 'firebase'
 
 import Badge from '../components/Badge';
 
@@ -117,7 +121,7 @@ const AppTabsScreen = () => (
           <View>
             <MaterialCommunityIcons name="cart" color={color} size={26} />
             <Badge />
-          </View>    
+          </View>
         ),
       }}
     />
@@ -135,12 +139,36 @@ const AppTabsScreen = () => (
   </AppTabs.Navigator>
 );
 
+function onStateChanged(data) {
 
+  const initialState = {
+    photoUri: 'https://cdn.pixabay.com/photo/2018/04/18/18/56/user-3331257__340.png',
+    userState: false
+  }
+
+  if(data){
+    AsyncStorage.setItem('user', JSON.stringify(data));
+  }else{
+    AsyncStorage.setItem('user', JSON.stringify(initialState));
+  }
+}
 //Root Navigator
 const RootStackScreen = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [fontsLoaded, setfontsLoaded] = useState(false);
+  const [user, setUser] = React.useState(null)
+
+  firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+      setUser(user);
+      onStateChanged(user)
+    } else {
+      setUser(null)
+      onStateChanged(user)
+    }
+  });
+
 
   const loadFonts = async () => {
 
@@ -178,8 +206,8 @@ const RootStackScreen = () => {
       {isLoading ? (
         <RootStack.Screen name="Loading" component={Loading} />
       ) : (
-        <RootStack.Screen name="AppTabsScreen" component={AppTabsScreen} />
-      )}
+          <RootStack.Screen name="AppTabsScreen" component={AppTabsScreen} />
+        )}
 
     </RootStack.Navigator>
   );
