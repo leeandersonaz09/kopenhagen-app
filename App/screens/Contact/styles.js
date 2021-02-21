@@ -1,5 +1,6 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import { colors, fonts, metrics } from '../../styles';
+const { width } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
   Container: {
@@ -22,6 +23,14 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     paddingTop: 50,
   },
+  container2: {
+		justifyContent: 'center',
+		alignItems: 'center',
+	},
+  textMessage: {
+		color: 'red',
+		fontSize: 16
+	},
   Section:{
     flexDirection:'row',
     paddingHorizontal:24,
@@ -34,7 +43,15 @@ const styles = StyleSheet.create({
   Photobutton:{
     position: 'relative',
     left: 0, top: -280,
-    marginLeft:(metrics.screenWidth/2)+155
+    marginLeft:(metrics.screenWidth/2)+155,
+    width: 34,
+		height:34,
+		borderRadius:20,
+		borderColor:"#fff",
+		borderWidth:1,
+		backgroundColor:"#f86f16",
+		justifyContent: 'center',
+		alignItems: 'center',
   },
   button:{
     position: 'absolute',
@@ -72,7 +89,36 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 40,
     padding: 4
-  }
+  },
+  viewWrapper: { 
+    flex: 1, 
+    alignItems: "center", 
+    justifyContent: "center", 
+    backgroundColor: "rgba(0, 0, 0, 0.2)", 
+}, 
+modalView: { 
+    alignItems: "center", 
+    justifyContent: "center", 
+    position: "absolute", 
+    top: "50%", 
+    left: "50%", 
+    elevation: 5, 
+    transform: [{ translateX: -(width * 0.4) },  
+                { translateY: -90 }], 
+    height: 180, 
+    width: width * 0.8, 
+    backgroundColor: "#fff", 
+    borderRadius: 7, 
+}, 
+textInput: { 
+    width: "80%", 
+    borderRadius: 5, 
+    paddingVertical: 8, 
+    paddingHorizontal: 16, 
+    borderColor: "rgba(0, 0, 0, 0.2)", 
+    borderWidth: 1, 
+    marginBottom: 8, 
+}, 
 
 });
 

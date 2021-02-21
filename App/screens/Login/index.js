@@ -17,11 +17,11 @@ import logo from '../../assets/Logo-1.png';
 //Lottie depence 
 import Lottie from 'lottie-react-native';
 //Lottie File 
-import dataloading from '../Components/loaders/mario.json';
-
+import dataloading from '../../loaders/mario.json';
+import styles from './styles';
 
 import * as firebase from 'firebase'
-import Firebase from '../config/firebase'
+import Firebase from '../../config/firebase';
 import "firebase/auth";
 
 export default ({ navigation }) => {
@@ -53,8 +53,6 @@ export default ({ navigation }) => {
 
   async function handleSubmit() {
 
-
-
     if (email == null || email === '' || password == null || password === '') {
 
       alertDefault('O campo de e-mail ou senha não podem estar em branco');
@@ -65,13 +63,12 @@ export default ({ navigation }) => {
         .auth()
         .signInWithEmailAndPassword(email, password)
         .then(() => {
-
           //chek is is new user to redirect to welcome screen
-
           setLoading(true);
           //Loading awai 1000ms to close
           setTimeout(() => {
             setLoading(false);
+            navigation.push('Profile')
             // if isNewUser is true direct to welcome screen else to home called tab1 (condição ternária javascript)
           },
             3500);
@@ -114,7 +111,7 @@ export default ({ navigation }) => {
 
   const forgotPassword = async () =>  {
 
-    if (email == null || email === '') {
+    if (!email) {
 
       alertDefault('Digite um email para redefinir sua senha!');
 
@@ -136,6 +133,14 @@ export default ({ navigation }) => {
           },
             1500);
 
+        }).catch((err)=>{
+          Alert.alert("Houve um erro, tente novamente!"[
+            {
+              text: 'Fechar',
+              style: 'cancel',
+            }
+          ]);
+          
         })
     }
   }
@@ -167,14 +172,8 @@ export default ({ navigation }) => {
       behavior="padding"
       style={styles.container}
     >
-      <StatusBar
-        hidden={false}
-        backgroundColor='#f05a5b'
-      />
-
       <Image style={styles.Image} source={logo} />
 
-      <Text style={styles.title}>DescontoFacilApp</Text>
 
       <View style={styles.form}>
         <Text style={styles.label}>SEU EMAIL *</Text>
@@ -228,81 +227,3 @@ export default ({ navigation }) => {
   )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  lottie: {
-    width: 300,
-    height: 300
-  },
-  form: {
-    alignSelf: 'stretch',
-    paddingHorizontal: 30,
-    marginTop: 0
-  },
-
-  title: {
-    fontWeight: 'bold',
-    marginTop: 5,
-    marginBottom: 10,
-    fontSize: 18
-  },
-
-  label: {
-    fontWeight: 'bold',
-    color: '#444',
-    marginBottom: 4
-  },
-
-  input: {
-    borderWidth: 1,
-    borderColor: '#DDD',
-    paddingHorizontal: 20,
-    fontSize: 16,
-    color: '#444',
-    height: 44,
-    marginBottom: 10,
-    borderRadius: 20
-  },
-
-  button: {
-    height: 42,
-    backgroundColor: '#f05a5b',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 40
-  },
-  buttonf: {
-    height: 38,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 40,
-  },
-  buttonf2: {
-    height: 38,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 40,
-    borderWidth: 0.5,
-    marginBottom: 10
-  },
-  buttonText: {
-    color: '#FFF',
-    fontWeight: 'bold',
-    fontSize: 16
-  },
-  buttonTextf: {
-    color: '#f44',
-    fontWeight: 'bold',
-    fontSize: 12
-  },
-
-  Image: {
-    width: 200,
-    height: 200
-  },
-
-})

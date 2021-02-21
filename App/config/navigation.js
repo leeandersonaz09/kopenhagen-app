@@ -17,14 +17,16 @@ import Loading from "../screens/Loading";
 import ExplorerScreen from "../screens/Explorer";
 import ProductDetails from "../screens/ProductDetails";
 import CartScreen from "../screens/Cart";
+import LoginScreen from "../screens/Login";
+import SignUpScreen from "../screens/Signup";
 
 import "firebase/auth";
-import * as firebase from 'firebase'
+import * as firebase from 'firebase';
 
 import Badge from '../components/Badge';
 
 //import Produtos from "../screens/Products";
-import Contato from "../screens/Contact";
+import Profile from "../screens/Contact";
 
 import { colors } from '../styles';
 
@@ -34,6 +36,7 @@ import { colors } from '../styles';
 const AppTabs = createMaterialBottomTabNavigator();
 const RootStack = createStackNavigator();
 const HomeStack = createStackNavigator();
+const AuthStack = createStackNavigator();
 
 //stack navigator Home
 const HomeStackScreen = () => (
@@ -127,7 +130,7 @@ const AppTabsScreen = () => (
     />
     <AppTabs.Screen
       name="Tab3"
-      component={Contato}
+      component={AuthStackScreen}
       options={{
         tabBarLabel: 'Perfil',
         tabBarIcon: ({ color }) => (
@@ -139,16 +142,46 @@ const AppTabsScreen = () => (
   </AppTabs.Navigator>
 );
 
-function onStateChanged(data) {
+//Telas de autenticação e login
+
+const AuthStackScreen = () => (
+  <AuthStack.Navigator
+    screenOptions={{
+      headerShown: false
+    }}>
+    <AuthStack.Screen name="Profile" component={Profile} />
+    <AuthStack.Screen name="Login" component={LoginScreen} />
+    <AuthStack.Screen name="SignUp" component={SignUpScreen} />
+  </AuthStack.Navigator>
+);
+
+async function onStateChanged(data) {
+
+  let dataf = [];
+   //console.log(dataf)
+  //const [users, setUsers] = React.useState(null)
 
   const initialState = {
-    photoUri: 'https://cdn.pixabay.com/photo/2018/04/18/18/56/user-3331257__340.png',
+    photoURL: 'https://cdn.pixabay.com/photo/2018/04/18/18/56/user-3331257__340.png',
     userState: false
-  }
+  }  
 
-  if(data){
-    AsyncStorage.setItem('user', JSON.stringify(data));
-  }else{
+  if (data) {
+
+    await firebase.firestore()
+    .collection("users")
+    .doc(data.uid)
+    .collection("profile")
+    .doc("personal")
+    .get()
+    .then(doc => {
+      dataf = doc.data()
+    });
+
+    dataf = {...dataf, userState:true, uid: data.uid}
+
+    AsyncStorage.setItem('user', JSON.stringify(dataf));
+  } else {
     AsyncStorage.setItem('user', JSON.stringify(initialState));
   }
 }
@@ -162,7 +195,7 @@ const RootStackScreen = () => {
   firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
       setUser(user);
-      onStateChanged(user)
+      onStateChanged(firebase.auth().currentUser)
     } else {
       setUser(null)
       onStateChanged(user)
