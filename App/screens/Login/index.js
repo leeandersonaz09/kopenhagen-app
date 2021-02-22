@@ -21,15 +21,9 @@ import dataloading from '../../loaders/mario.json';
 import styles from './styles';
 
 import * as firebase from 'firebase'
-import Firebase from '../../config/firebase';
 import "firebase/auth";
 
 export default ({ navigation }) => {
-
-
-  if (!firebase.apps.length) {
-    firebase.initializeApp(Firebase);
-  }
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

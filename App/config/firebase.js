@@ -1,5 +1,3 @@
-import * as firebase from 'firebase';
-
 // Optionally import the services that you want to use
 import "firebase/auth";
 //import "firebase/database";
@@ -19,5 +17,5 @@ var firebaseConfig = {
   appId: "1:1046487630212:web:0d87b6943ac9a5aab29dd1",
   measurementId: "G-JSBBYPM10Y"
 };
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+
+export default firebaseConfig;

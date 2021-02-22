@@ -4898,6 +4898,11 @@ lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.3.
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
   integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
 
+lodash@^4.17.20:
+  version "4.17.21"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
+  integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
+
 log-symbols@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/log-symbols/-/log-symbols-2.2.0.tgz#5740e1c5d6f0dfda4ad9323b5332107ef6b4c40a"
@@ -6175,6 +6180,15 @@ react-navigation-header-buttons@^6.2.1:
   integrity sha512-1UYxuZ29oNfXhgc4x4ZzaH8pcqiYd3WJGE0zldqdiFW3D/Anr08zH50eegl0uHrnTjZIt+qcGhPWP9C0Cxf4UA==
   dependencies:
     invariant ">=2"
+
+react-redux-firebase@^3.10.0:
+  version "3.10.0"
+  resolved "https://registry.yarnpkg.com/react-redux-firebase/-/react-redux-firebase-3.10.0.tgz#f4c69145292fd8d0c5f44f53b37a6b307dbf3c56"
+  integrity sha512-reEPqUgNQRR2IHsNHPvyMXRZRZUvbQmA9oWzDBOK1FCxd/MiE9py6R7ezEtKs5iLEH55eDRpVPl2n3bYsndEiQ==
+  dependencies:
+    hoist-non-react-statics "^3.3.2"
+    lodash "^4.17.20"
+    prop-types "^15.7.2"
 
 react-redux@^7.1.0:
   version "7.2.2"

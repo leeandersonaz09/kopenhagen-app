@@ -35,6 +35,7 @@
     "react-native-svg": "12.1.0",
     "react-navigation-header-buttons": "^6.2.1",
     "react-redux": "^7.1.0",
+    "react-redux-firebase": "^3.10.0",
     "redux": "^4.0.1",
     "whatwg-fetch": "^3.0.0"
   },
