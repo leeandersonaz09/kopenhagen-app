@@ -12,6 +12,7 @@ import ExplorerList from './ExplorerList';
 import DetailsContainer from './DetailsContainer';
 import Badge from './Badge';
 import Item from './Item';
+import Profile from './Profile';
 
 export {
   Header,
@@ -26,5 +27,6 @@ export {
   ExplorerList,
   DetailsContainer,
   Badge,
-  Item
+  Item,
+  Profile
 };

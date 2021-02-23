@@ -4,7 +4,8 @@ import FlashMessage from 'react-native-flash-message';
 import { Provider } from 'react-redux';
 import store from './store';
 
-import firebase from 'firebase/app'
+import * as firebase from 'firebase';
+
 import 'firebase/auth'
 import 'firebase/firestore'
 import "firebase/storage";

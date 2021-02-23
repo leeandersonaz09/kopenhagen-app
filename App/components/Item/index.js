@@ -5,7 +5,7 @@ import styles from './styles';
 
 import { MaterialIcons } from '@expo/vector-icons';
 
-export default function Item({ item, removeItemCart, onDecrement, onIncrement }) {
+export default function Item({ item, removeItemCart, onDecrement, onIncrement}) {
 
 	return (
 		<SafeAreaView >

@@ -2,17 +2,9 @@ import React from 'react';
 import { View, StatusBar, Text, ActivityIndicator } from 'react-native';
 import Lottie from 'lottie-react-native';
 import dataloading from '../../loaders/order-option.json';
-import * as firebase from 'firebase';
-import Firebase from '../../config/firebase';
 import { colors } from '../../styles';
 
 function Loading({ navigation }) {
-
-  if (!firebase.apps.length) {
-    firebase.initializeApp(Firebase);
-  }else {
-    firebase.app(); // if already initialized, use that one
- }
  
   return (
 

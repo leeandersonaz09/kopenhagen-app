@@ -18,6 +18,14 @@ export default StyleSheet.create({
 		fontWeight: "bold",
 		marginBottom:20
 	},
+	TabText: {
+		color: colors.white,
+	  },
+	
+	  TabIcon: {
+		padding: 10,
+		color: colors.yellow,
+	  },
 	textMessage: {
 		color: 'red',
 		fontSize: 16
@@ -75,5 +83,14 @@ export default StyleSheet.create({
 		fontSize: 18,
 		color: "white",
 		fontWeight: "bold",
-	}
+	},
+	loginButton :{
+		width: 180,
+		backgroundColor: '#000',
+		flexDirection: 'row',
+		alignItems: 'center',
+		justifyContent: "center",
+		borderRadius: 5,
+		padding: 4
+	  }
 });

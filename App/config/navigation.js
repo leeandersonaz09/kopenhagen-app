@@ -36,7 +36,7 @@ import { colors } from '../styles';
 const AppTabs = createMaterialBottomTabNavigator();
 const RootStack = createStackNavigator();
 const HomeStack = createStackNavigator();
-const AuthStack = createStackNavigator();
+const Stack = createStackNavigator();
 
 //stack navigator Home
 const HomeStackScreen = () => (
@@ -130,7 +130,7 @@ const AppTabsScreen = () => (
     />
     <AppTabs.Screen
       name="Tab3"
-      component={AuthStackScreen}
+      component={StackScreen}
       options={{
         tabBarLabel: 'Perfil',
         tabBarIcon: ({ color }) => (
@@ -144,27 +144,20 @@ const AppTabsScreen = () => (
 
 //Telas de autenticação e login
 
-const AuthStackScreen = () => (
-  <AuthStack.Navigator
+const StackScreen = () => (
+  <Stack.Navigator
     screenOptions={{
       headerShown: false
     }}>
-    <AuthStack.Screen name="Profile" component={Profile} />
-    <AuthStack.Screen name="Login" component={LoginScreen} />
-    <AuthStack.Screen name="SignUp" component={SignUpScreen} />
-  </AuthStack.Navigator>
+    <Stack.Screen name="Profile" component={Profile} />
+    <Stack.Screen name="Login" component={LoginScreen} />
+    <Stack.Screen name="SignUp" component={SignUpScreen} />
+  </Stack.Navigator>
 );
 
 async function onStateChanged(data) {
 
-  let dataf = [];
-   //console.log(dataf)
-  //const [users, setUsers] = React.useState(null)
-
-  const initialState = {
-    photoURL: 'https://cdn.pixabay.com/photo/2018/04/18/18/56/user-3331257__340.png',
-    userState: false
-  }  
+  let dataf = []; 
 
   if (data) {
 
@@ -178,11 +171,10 @@ async function onStateChanged(data) {
       dataf = doc.data()
     });
 
-    dataf = {...dataf, userState:true, uid: data.uid}
-
+    dataf = {...dataf, uid: data.uid}
     AsyncStorage.setItem('user', JSON.stringify(dataf));
   } else {
-    AsyncStorage.setItem('user', JSON.stringify(initialState));
+    AsyncStorage.setItem('user', JSON.stringify(data));
   }
 }
 //Root Navigator
@@ -190,15 +182,12 @@ const RootStackScreen = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [fontsLoaded, setfontsLoaded] = useState(false);
-  const [user, setUser] = React.useState(null)
 
   firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
-      setUser(user);
-      onStateChanged(firebase.auth().currentUser)
-    } else {
-      setUser(null)
       onStateChanged(user)
+    } else {
+      onStateChanged(null)
     }
   });
 

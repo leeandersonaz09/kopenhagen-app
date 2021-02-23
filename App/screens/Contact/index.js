@@ -8,13 +8,12 @@ import {
   TextInput,
   Button
 } from 'react-native';
+import * as firebase from 'firebase';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Icon } from 'native-base';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Text } from '../../components';
 import styles from './styles';
-import * as firebase from 'firebase';
-//Lottie depence 
 import Lottie from 'lottie-react-native';
 //Lottie File 
 import dataloading from '../../loaders/photo.json';
@@ -22,27 +21,23 @@ import FireFunctions from "../../config/FireFunctions";
 import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
 import { showMessage } from 'react-native-flash-message';
+import colors from '../../styles/colors';
 
 const Contact = ({ navigation }) => {
 
   const [userData, setuserData] = useState([]);
   const [loading, setLoading] = useState(false);
-  // This is to manage Modal State 
   const [isModalVisible, setModalVisible] = useState(false);
-  // change Modal State 
   const [modalType, setmodalType] = useState([]);
-  // This is to manage TextInput State 
   const [inputValue, setInputValue] = useState("");
-
-  // Create toggleModalVisibility function that will 
-  // Open and close modal upon button clicks. 
+  const db = firebase.firestore().collection("users");
 
   function toggleModalVisibility(type) {
-    const db = firebase.firestore().collection("users").doc(firebase.auth().currentUser.uid).collection("profile").doc("personal");
+    setModalVisible(true);
 
     if (type === 'name') {
 
-      db.update({
+      db.doc(firebase.auth().currentUser.uid).collection("profile").doc("personal").update({
         name: inputValue
       }).then(async function () {
 
@@ -66,7 +61,7 @@ const Contact = ({ navigation }) => {
     }
 
     if (type === 'adress') {
-      db.update({
+      db.doc(firebase.auth().currentUser.uid).collection("profile").doc("personal").update({
         adress: inputValue
       }).then(async function () {
 
@@ -90,12 +85,11 @@ const Contact = ({ navigation }) => {
     }
 
     if (type === 'phone') {
-      db.update({
+      db.doc(firebase.auth().currentUser.uid).collection("profile").doc("personal").update({
         phone: inputValue
       }).then(async function () {
 
         const newobj = { ...userData, phone: inputValue }
-        await AsyncStorage.setItem('user', JSON.stringify(newobj))
         setuserData(newobj);
 
         showMessage({
@@ -117,7 +111,7 @@ const Contact = ({ navigation }) => {
 
       firebase.auth().currentUser.updateEmail(inputValue).then(async function () {
 
-        await db.update({
+        await db.doc(firebase.auth().currentUser.uid).collection("profile").doc("personal").update({
           email: inputValue
         })
 
@@ -145,7 +139,7 @@ const Contact = ({ navigation }) => {
         });
       });
     }
-    setModalVisible(!isModalVisible);
+    setModalVisible(false);
     setInputValue("");
   };
 
@@ -153,7 +147,7 @@ const Contact = ({ navigation }) => {
 
     const getPhotoPermission = async () => {
       if (Constants.platform.ios) {
-        const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+        const { status } = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
 
         if (status != "granted") {
           alert("We need permission to use your camera roll if you'd like to incude a photo.");
@@ -197,10 +191,7 @@ const Contact = ({ navigation }) => {
       </View>
     )
   }
-
-
-  //console.log(userData)
-
+  console.log(userData)
   const updatePhoto = async () => {
 
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -211,16 +202,27 @@ const Contact = ({ navigation }) => {
     if (!result.cancelled) {
       setLoading(true);
       const getimg = await FireFunctions.shared.uploadUserPhotoAsync(result.uri)
-      await firebase.auth().currentUser.updateProfile({
-        photoURL: getimg
+
+      await db.doc(firebase.auth().currentUser.uid).collection("profile").doc("personal").update({
+        img: getimg
       }).then(async () => {
 
-        await AsyncStorage.setItem('user', JSON.stringify({ ...userData, img: getimg }))
+        showMessage({
+          message: `Sua foto foi alterado com sucesso`,
+          type: "success",
+          duration: 2800
+        });
+
         setuserData({ ...userData, img: getimg });
         setLoading(false);
 
       }).catch((err) => {
-        alert(err);
+        showMessage({
+          message: `${err}. Tente novamente!`,
+          type: 'warning',
+          backgroundColor: '#d84646',
+          duration: 2800
+        });
       })
 
     }
@@ -230,7 +232,8 @@ const Contact = ({ navigation }) => {
     try {
       firebase.auth().signOut().then(async () => {
         await AsyncStorage.setItem('user', JSON.stringify({ userState: false }))
-        navigation.push('Profile')
+        AsyncStorage.clear();
+       // setuserData(null);
       })
         .catch(function (error) {
           console.log(error);
@@ -245,17 +248,18 @@ const Contact = ({ navigation }) => {
       <SafeAreaView style={styles.Container}>
         <Image
           style={styles.headerImage}
-          source={{ uri: userData.img ? userData.img : 'https://cdn.pixabay.com/photo/2018/04/18/18/56/user-3331257__340.png' }}
+          source={userData ? {uri:userData.img} : require('../../assets/blank_profile.webp')}
+          
         />
-        <TouchableOpacity style={styles.Photobutton} onPress={() => updatePhoto()}>
-          <Icon name="camera-outline" size={25} style={{
-            color: '#fff',
-            elevation: 1,
-          }} />
-        </TouchableOpacity>
-        <View style={styles.content}>
-          {userData.userState || userData.uid ? (
-            <>
+        {userData ? (
+          <>
+            <TouchableOpacity style={styles.Photobutton} onPress={() => updatePhoto()}>
+              <Icon name="camera-outline" size={25} style={{
+                color: '#fff',
+                elevation: 1,
+              }} />
+            </TouchableOpacity>
+            <View style={styles.content}>
               <View style={styles.Section}>
                 <View>
                   <Text style={styles.name}>{userData.name}</Text>
@@ -281,7 +285,7 @@ const Contact = ({ navigation }) => {
                 <View style={styles.iconText}>
                   <MaterialIcons
                     name="map"
-                    color="#969696"
+                    color={colors.red}
                     size={24} />
                   <Text
                     nnumberOfLines={1}
@@ -311,7 +315,7 @@ const Contact = ({ navigation }) => {
                 <View style={styles.iconText}>
                   <MaterialIcons
                     name="phone"
-                    color="#969696"
+                    color= {colors.red}
                     size={24} />
                   <Text
                     nnumberOfLines={1}
@@ -340,7 +344,7 @@ const Contact = ({ navigation }) => {
                 <View style={styles.iconText}>
                   <MaterialIcons
                     name="mail"
-                    color="#969696"
+                    color={colors.red}
                     size={24} />
                   <Text
                     nnumberOfLines={1}
@@ -371,25 +375,28 @@ const Contact = ({ navigation }) => {
                   <View style={{ width: 10 }} />
                   <Icon name="log-out-outline" size={30} style={{ color: '#fff' }} />
                 </TouchableOpacity>
-              </View></>
-          ) : (
-              <>
-                <View style={styles.container2}>
-                  <Text style={styles.textMessage}>Entre na sua conta para fazer pedidos!</Text>
-                  <View style={{ textAlign: 'center', alignItems: 'center', marginTop: 70 }}>
-                    <TouchableOpacity
-                      onPress={() => navigation.push('Login')}
-                      style={styles.logoutButton}>
-                      <Text style={{ fontSize: 18, color: "white", fontWeight: "bold" }}>Entrar </Text>
-                      <View style={{ width: 10 }} />
-                      <Icon name="log-in-outline" size={30} style={{ color: '#fff' }} />
-                    </TouchableOpacity>
-                  </View>
+              </View>
+            </View>
+          </>
+        ) : (
+          <>
+            <View style={styles.content}>
+              <View style={styles.container2}>
+                <Text style={styles.textMessage}>Entre na sua conta para fazer pedidos!</Text>
+                <View style={{ textAlign: 'center', alignItems: 'center', marginTop: 70 }}>
+                  <TouchableOpacity
+                    onPress={() => navigation.push('Login')}
+                    style={styles.logoutButton}>
+                    <Text style={{ fontSize: 18, color: "white", fontWeight: "bold" }}>Entrar </Text>
+                    <View style={{ width: 10 }} />
+                    <Icon name="log-in-outline" size={30} style={{ color: '#fff' }} />
+                  </TouchableOpacity>
                 </View>
-              </>
-            )}
+              </View>
+            </View>
 
-        </View>
+          </>
+        )}
         <Modal animationType="slide"
           transparent visible={isModalVisible}
           presentationStyle="overFullScreen"
@@ -410,6 +417,7 @@ const Contact = ({ navigation }) => {
             </View>
           </View>
         </Modal>
+
       </SafeAreaView>
     </React.Fragment>
   )

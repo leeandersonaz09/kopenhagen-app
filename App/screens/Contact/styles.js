@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   name:{
     fontSize:fonts.header,
     flexWrap:'wrap',
-    fontWeight:'bold'
+    fontWeight:'bold',
   },
   Photobutton:{
     position: 'relative',
@@ -49,7 +49,6 @@ const styles = StyleSheet.create({
 		borderRadius:20,
 		borderColor:"#fff",
 		borderWidth:1,
-		backgroundColor:"#f86f16",
 		justifyContent: 'center',
 		alignItems: 'center',
   },
