@@ -32,6 +32,18 @@ const Contact = ({ navigation }) => {
   const [inputValue, setInputValue] = useState("");
   const db = firebase.firestore().collection("users");
 
+  AsyncStorage.getItem('user').then((user) => {
+
+    if (user) {
+      // We have data!!
+      const data = JSON.parse(user)
+      setuserData(data);
+
+    }
+  }).catch((err) => {
+      console.log(err)
+    })
+
   function toggleModalVisibility(type) {
     setModalVisible(true);
 
@@ -155,19 +167,6 @@ const Contact = ({ navigation }) => {
       }
     };
 
-    AsyncStorage.getItem('user').then((user) => {
-
-      if (user !== null) {
-        // We have data!!
-        const data = JSON.parse(user)
-        setuserData(data);
-
-      }
-    })
-      .catch((err) => {
-        console.log(err)
-      })
-
   }, [])
 
 
@@ -191,7 +190,7 @@ const Contact = ({ navigation }) => {
       </View>
     )
   }
-  console.log(userData)
+
   const updatePhoto = async () => {
 
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -233,7 +232,7 @@ const Contact = ({ navigation }) => {
       firebase.auth().signOut().then(async () => {
         await AsyncStorage.setItem('user', JSON.stringify({ userState: false }))
         AsyncStorage.clear();
-       // setuserData(null);
+        setuserData(null);
       })
         .catch(function (error) {
           console.log(error);
@@ -248,8 +247,8 @@ const Contact = ({ navigation }) => {
       <SafeAreaView style={styles.Container}>
         <Image
           style={styles.headerImage}
-          source={userData ? {uri:userData.img} : require('../../assets/blank_profile.webp')}
-          
+          source={userData ? { uri: userData.img } : require('../../assets/blank_profile.webp')}
+
         />
         {userData ? (
           <>
@@ -315,7 +314,7 @@ const Contact = ({ navigation }) => {
                 <View style={styles.iconText}>
                   <MaterialIcons
                     name="phone"
-                    color= {colors.red}
+                    color={colors.red}
                     size={24} />
                   <Text
                     nnumberOfLines={1}

@@ -8,21 +8,26 @@ import styles from './styles';
 import { ScrollView } from 'react-native-gesture-handler';
 import colors from '../../styles/colors';
 
-export default function Cart({navigation}) {
+export default function Cart({ navigation }) {
 
-	function goToLogin(){
-		navigation.navigate('Tab3')
+	function goToLogin() {
+		navigation.navigate('Profile')
 	}
+
+	const renderTabBar = (props) => {
+		props.tabStyle = Object.create(props.tabStyle);
+		return <DefaultTabBar {...props} />;
+	};
 
 	return (
 		<>
 			<Container>
-				<Tabs tabBarBackgroundColor={colors.black} tabBarUnderlineStyle={{ backgroundColor: colors.yellow }} renderTabBar={() => <ScrollableTab />}>
+				<Tabs renderTabBar={renderTabBar} tabBarBackgroundColor={colors.black} tabBarUnderlineStyle={{ backgroundColor: colors.yellow }} renderTabBar={() => <ScrollableTab />}>
 					<Tab heading={<TabHeading style={{ backgroundColor: colors.black }}><Icon style={styles.TabIcon} name="md-cart" /><Text style={styles.TabText} >Meu carrinho</Text></TabHeading>}>
 						<Tab1 />
 					</Tab>
 					<Tab heading={<TabHeading style={{ backgroundColor: colors.black }}><Icon style={styles.TabIcon} name="archive-outline" /><Text style={styles.TabText} >Meus pedidos</Text></TabHeading>}>
-						<Tab2 goToLogin={()=> goToLogin()}/>
+						<Tab2 goToLogin={() => goToLogin()} />
 					</Tab>
 				</Tabs>
 			</Container>

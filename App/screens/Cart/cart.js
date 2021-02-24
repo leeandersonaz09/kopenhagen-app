@@ -19,7 +19,7 @@ import styles from './styles';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as firebase from 'firebase';
 
-export default function Cart() {
+export default function CartItem() {
 	const [userData, setuserData] = useState([]);
 	const cart = useSelector(itemsCartSelector);
 	let total = useSelector(calculateTotalSelector).toFixed(2);
@@ -32,6 +32,7 @@ export default function Cart() {
 			// We have data!!
 			const data = JSON.parse(user)
 			setuserData(data);
+			//console.log(userData)
 
 		}
 	})
@@ -45,7 +46,7 @@ export default function Cart() {
 
 		showMessage({
 			message: `${item.title} excluido com sucesso`,
-			type: 'warning'
+			type: 'success'
 		});
 	}
 
@@ -60,29 +61,31 @@ export default function Cart() {
 	}
 
 	async function onsendRequest() {
+		const db = firebase.firestore()
+			.collection("Pedidos")
+			.doc(firebase.auth().currentUser.uid)
+
 		if (userData) {
 
-			firebase.firestore()
-				.collection("Pedidos")
-				.doc(firebase.auth().currentUser.uid)
-				.add({
-					data: new Date().toLocaleString(),
-					cart: cart,
-					total: total,
-					adress: userData.adress,
-					phone: userData.phone,
-					email: userData.email
+			let counter = cart.length;
+
+			while (counter > 0) {
+
+				cart.map(async (data) => {
+
+					await db.collection('cart').doc(data.id).set({ ...data, status: 'ativo' })
+					dispatch(removeItem(data.id));
 				})
-				.then(ref => {
-					showMessage({
-						message: `Seu pedido foi enviado com sucesso`,
-						type: 'sucess'
-					});
-				})
-				.catch(error => {
-					console.log(error)
-				});
-		}else{
+
+				counter--;
+			}
+			
+			showMessage({
+				message: `Pedidos enviados com sucesso!`,
+				type: 'success'
+			});
+
+		} else {
 			showMessage({
 				message: `Você precisa estar logado para confirmar o pedido!`,
 				type: 'warning'
@@ -133,8 +136,8 @@ export default function Cart() {
 						<View style={styles.buttonSection}>
 							<TouchableOpacity
 								style={styles.Button}
-								onPress={()=>onsendRequest()}
-								>
+								onPress={() => onsendRequest()}
+							>
 								<Text style={styles.textButton}>Concluir Pedido</Text>
 								<View style={{ width: 10 }} />
 								<Icon name="cloud-upload-outline" size={30} style={{ color: '#fff' }} />

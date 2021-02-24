@@ -164,8 +164,6 @@ async function onStateChanged(data) {
     await firebase.firestore()
     .collection("users")
     .doc(data.uid)
-    .collection("profile")
-    .doc("personal")
     .get()
     .then(doc => {
       dataf = doc.data()
