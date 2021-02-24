@@ -19,26 +19,19 @@ export default function Pedidos({ goToLogin }) {
 
                         const list = [];
 
-                        // Get the last document
-                        let lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
-                        setLastVisible(lastVisible);
-
                         querySnapshot.forEach(doc => {
 
-                            const { img, title, price, status } = doc.data();
+                            const { img, data, title, price, status } = doc.data();
                             list.push({
                                 id: doc.id,
                                 img,
-                                title: title,
+                                title,
                                 price,
                                 data,
                                 status: status
                             });
                         });
                         setdocumentData(list);
-                        setTimeout(() => {
-                            //
-                        }, 2000);
                     }
                 })
         } catch (error) {
@@ -64,7 +57,7 @@ export default function Pedidos({ goToLogin }) {
                 </View>
             </>
         )
-    }   
+    }
     console.log(documentData)
 
     const renderData = () => {
@@ -72,9 +65,14 @@ export default function Pedidos({ goToLogin }) {
             <>
                 { documentData ? (
                     <>
-                        <View style={styles.container2}>
-                            <Text style={styles.textMessage}>Tem data</Text>
-                        </View>
+
+                        {documentData.map((data, index) =>
+                           <View style={styles.container2}>
+                               <Text>{data.title}</Text>
+                                <Text>{data.status}</Text>
+                           </View>
+                        )}
+
                     </>
                 ) : (
                     <>
@@ -88,7 +86,7 @@ export default function Pedidos({ goToLogin }) {
     }
 
     useEffect(() => {
-
+        getData()
 
     }, [])
 
