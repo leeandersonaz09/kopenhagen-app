@@ -5,8 +5,7 @@ import 'react-native-gesture-handler';
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-// import AsyncStorage
-import AsyncStorage from '@react-native-community/async-storage';
+;
 //icons and fonts
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Ionicons } from "@expo/vector-icons";
@@ -19,18 +18,11 @@ import ProductDetails from "../screens/ProductDetails";
 import CartScreen from "../screens/Cart";
 import LoginScreen from "../screens/Login";
 import SignUpScreen from "../screens/Signup";
-
-import "firebase/auth";
-import * as firebase from 'firebase';
-
-import Badge from '../components/Badge';
-
-//import Produtos from "../screens/Products";
 import Profile from "../screens/Contact";
 
+import Badge from '../components/Badge';
+//import styles
 import { colors } from '../styles';
-
-//para novos uruários serem redirecionados para tela welcome
 
 //instancing navigators
 const AppTabs = createMaterialBottomTabNavigator();
@@ -155,40 +147,11 @@ const StackScreen = () => (
   </Stack.Navigator>
 );
 
-async function onStateChanged(data) {
-
-  let dataf = []; 
-
-  if (data) {
-
-    await firebase.firestore()
-    .collection("users")
-    .doc(data.uid)
-    .get()
-    .then(doc => {
-      dataf = doc.data()
-    });
-
-    dataf = {...dataf, uid: data.uid}
-    AsyncStorage.setItem('user', JSON.stringify(dataf));
-  } else {
-    AsyncStorage.setItem('user', JSON.stringify(data));
-  }
-}
 //Root Navigator
 const RootStackScreen = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [fontsLoaded, setfontsLoaded] = useState(false);
-
-  firebase.auth().onAuthStateChanged(function (user) {
-    if (user) {
-      onStateChanged(user)
-    } else {
-      onStateChanged(null)
-    }
-  });
-
 
   const loadFonts = async () => {
 

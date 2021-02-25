@@ -60,7 +60,6 @@ export default function Pedidos({ goToLogin }) {
             </>
         )
     }
-    console.log(documentData)
 
     const renderData = () => {
         return (
@@ -69,7 +68,7 @@ export default function Pedidos({ goToLogin }) {
                     <>
 
                         {documentData.map((data, index) =>
-                           <View style={styles.container2}>
+                           <View>
                                <Text>{data.title}</Text>
                                 <Text>{data.status}</Text>
                            </View>

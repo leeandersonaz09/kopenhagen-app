@@ -5,11 +5,9 @@ import {
   View,
   Text,
   TextInput,
-  StyleSheet,
   KeyboardAvoidingView,
   Image,
   TouchableOpacity,
-  StatusBar
 } from 'react-native';
 
 import logo from '../../assets/Logo-1.png';
@@ -22,9 +20,11 @@ import styles from './styles';
 
 import * as firebase from 'firebase'
 import "firebase/auth";
+import { useFirebase } from '../../config/firebase'
 
 export default ({ navigation }) => {
 
+  const { login} = useFirebase();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -53,19 +53,15 @@ export default ({ navigation }) => {
 
     } else {
 
-      await firebase
-        .auth()
-        .signInWithEmailAndPassword(email, password)
+      await login(email, password)
         .then(() => {
-          //chek is is new user to redirect to welcome screen
           setLoading(true);
           //Loading awai 1000ms to close
           setTimeout(() => {
             setLoading(false);
             navigation.push('Profile')
-            // if isNewUser is true direct to welcome screen else to home called tab1 (condição ternária javascript)
           },
-            3500);
+            1000);
 
         })
         .catch(function (error) {

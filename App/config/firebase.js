@@ -60,12 +60,20 @@ const useFirebase = () => {
       .update(document);
   }
 
+  const saveDocumentPedidos = (documentPath, document) => {
+    firebase.firestore()
+    .collection('Pedidos')
+      .doc(authUser.uid)
+      .collection('cart')
+      .doc(documentPath)
+      .set(document);
+  }
   const login = useCallback((email, password) => firebase.auth()
     .signInWithEmailAndPassword(email, password), []);
 
   const logout = useCallback(() => firebase.auth().signOut(), [])
 
-  return { login, authUser, logout, getDocument, saveDocument }
+  return { login, authUser, logout, getDocument, saveDocument, saveDocumentPedidos }
 }
 
 export { useFirebase }
