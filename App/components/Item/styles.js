@@ -7,7 +7,7 @@ export default StyleSheet.create({
 		flexDirection:'row',
 		alignContent:'space-between',
 		flex:1,
-		paddingHorizontal:8
+		paddingHorizontal:4
 	},
 	card:{
 		flexDirection:'row',
@@ -25,7 +25,6 @@ export default StyleSheet.create({
 	},
 	titleSection:{
 		marginLeft:16,
-		marginHorizontal:10,
 		alignContent:'space-between',
 		flex:1,
 	},
@@ -67,8 +66,8 @@ export default StyleSheet.create({
 
 	},
 	btn: {
-		width: 53,
-		height:53,
+		width: 48,
+		height:48,
 		borderRadius:20,
 		borderColor:"#fff",
 		borderWidth:1,

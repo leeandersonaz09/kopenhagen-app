@@ -6,9 +6,10 @@ import {
   TouchableOpacity,
   Modal,
   TextInput,
-  Button
+  Button,
+  Platform
 } from 'react-native';
-
+import { StatusBar } from 'expo-status-bar';
 import { Icon } from 'native-base';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Text } from '../../components';
@@ -32,7 +33,7 @@ const Contact = ({ navigation }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [modalType, setmodalType] = useState([]);
   const [inputValue, setInputValue] = useState("");
-
+  const [keyboardType, setkeyboardType] = useState('');
 
   const handleGet = () => {
 
@@ -74,6 +75,9 @@ const Contact = ({ navigation }) => {
     }
 
     if (type === 'adress') {
+
+      keyboardType = 'default'
+
       try {
         saveDocument(
           authUser.uid,
@@ -92,6 +96,7 @@ const Contact = ({ navigation }) => {
     }
 
     if (type === 'phone') {
+
       try {
         saveDocument(
           authUser.uid,
@@ -110,6 +115,8 @@ const Contact = ({ navigation }) => {
     }
 
     if (type === 'email') {
+
+      setkeyboardType('email-address')
 
       authUser.updateEmail(inputValue).then(async function () {
         saveDocument(
@@ -209,59 +216,71 @@ const Contact = ({ navigation }) => {
   const renderIfuser = () => {
 
     return (
-      <>
+      <> 
+   
         <TouchableOpacity style={styles.Photobutton} onPress={() => updatePhoto()}>
           <Icon name="camera-outline" size={25} style={{
             color: '#fff',
             elevation: 1,
           }} />
         </TouchableOpacity>
+
         <View style={styles.content}>
           <View style={styles.Section}>
             <View>
               <Text style={styles.name}>{userData.name}</Text>
             </View>
+            <View style={styles.arrow}>
+              <TouchableOpacity onPress={() => {
+                setmodalType({
+                  title: 'Atualizar Nome',
+                  holder: "Digite seu nome...",
+                  type: "name",
+                  keyboardType:"default",
+                  maxLength: 100,
+                })
+                setModalVisible(!isModalVisible);
+              }} style={styles.button}>
 
-            <TouchableOpacity onPress={() => {
-              setmodalType({
-                title: 'Atualizar Nome',
-                holder: "Digite seu nome...",
-                type: "name"
-              })
-              setModalVisible(!isModalVisible);
-            }} style={styles.button}>
-
-              <MaterialIcons name="arrow-forward-ios" color="#969696" size={25} />
-            </TouchableOpacity>
+                <MaterialIcons name="arrow-forward-ios" color="#969696" size={25} />
+              </TouchableOpacity>
+            </View>
 
           </View>
 
           <View style={styles.separator} />
 
           <View style={styles.Section}>
-            <View style={styles.iconText}>
-              <MaterialIcons
-                name="map"
-                color={colors.red}
-                size={24} />
-              <Text
-                nnumberOfLines={1}
-                ellipsizeMode='tail'
-                style={styles.adress}>
-                {userData.adress}
-              </Text>
+
+            <View style={styles.sectionAdress}>
+              <View style={{ flexDirection: 'row' }}>
+                <MaterialIcons
+                  name="map"
+                  color={colors.red}
+                  size={24} />
+                <Text
+                  nnumberOfLines={1}
+                  style={styles.adress}>
+                  {userData.adress}
+                </Text>
+              </View>
+
             </View>
 
-            <TouchableOpacity onPress={() => {
-              setmodalType({
-                title: 'Atualizar Endereço',
-                holder: "Digite seu endereço...",
-                type: "adress"
-              })
-              setModalVisible(!isModalVisible);
-            }} style={styles.button}>
-              <MaterialIcons name="arrow-forward-ios" color="#969696" size={25} />
-            </TouchableOpacity>
+            <View style={styles.arrow}>
+              <TouchableOpacity onPress={() => {
+                setmodalType({
+                  title: 'Atualizar Endereço',
+                  holder: "Digite seu endereço...",
+                  type: "adress",
+                  keyboardType:"default",
+                  maxLength: 100,
+                })
+                setModalVisible(!isModalVisible);
+              }} style={styles.button}>
+                <MaterialIcons name="arrow-forward-ios" color="#969696" size={25} />
+              </TouchableOpacity>
+            </View>
 
           </View>
 
@@ -281,18 +300,20 @@ const Contact = ({ navigation }) => {
                 {userData.phone}
               </Text>
             </View>
-
-            <TouchableOpacity onPress={() => {
-              setmodalType({
-                title: 'Atualizar Telefone',
-                holder: "Digite seu telefone...",
-                type: "phone"
-              })
-              setModalVisible(!isModalVisible);
-            }} style={styles.button}>
-              <MaterialIcons name="arrow-forward-ios" color="#969696" size={25} />
-            </TouchableOpacity>
-
+            <View style={styles.arrow}>
+              <TouchableOpacity onPress={() => {
+                setmodalType({
+                  title: 'Atualizar Telefone',
+                  holder: "Digite seu número...",
+                  type: "phone",
+                  keyboardType: Platform.OS === 'ios' ? 'name-phone-pad' : 'phone-pad',
+                  maxLength: 11,
+                })
+                setModalVisible(!isModalVisible);
+              }} style={styles.button}>
+                <MaterialIcons name="arrow-forward-ios" color="#969696" size={25} />
+              </TouchableOpacity>
+            </View>
           </View>
 
           <View style={styles.separator} />
@@ -310,17 +331,21 @@ const Contact = ({ navigation }) => {
                 {userData.email}
               </Text>
             </View>
+            <View style={styles.arrow}>
+              <TouchableOpacity onPress={() => {
+                setmodalType({
+                  title: 'Atualizar Email',
+                  holder: "Digite seu email...",
+                  type: "email",
+                  keyboardType: 'email-address',
+                  maxLength: 40
 
-            <TouchableOpacity onPress={() => {
-              setmodalType({
-                title: 'Atualizar Email',
-                holder: "Digite seu email...",
-                type: "email"
-              })
-              setModalVisible(!isModalVisible);
-            }} style={styles.button}>
-              <MaterialIcons name="arrow-forward-ios" color="#969696" size={25} />
-            </TouchableOpacity>
+                })
+                setModalVisible(!isModalVisible);
+              }} style={styles.button}>
+                <MaterialIcons name="arrow-forward-ios" color="#969696" size={25} />
+              </TouchableOpacity>
+            </View>
 
           </View>
 
@@ -340,29 +365,27 @@ const Contact = ({ navigation }) => {
 
   return (
     <React.Fragment>
-      <SafeAreaView style={styles.Container}>
-        <Image
-          style={styles.headerImage}
-          source={authUser ? { uri: userData.img } : require('../../assets/blank_profile.webp')}
-
-        />
+      <Image
+        style={styles.headerImage}
+        source={authUser ? { uri: userData.img } : require('../../assets/blank_profile.png')}
+      />
+      <View style={styles.Container}>
         {authUser ? (renderIfuser()) : (
-          <>
-            <View style={styles.content}>
-              <View style={styles.container2}>
-                <Text style={styles.textMessage}>Entre na sua conta para fazer pedidos!</Text>
-                <View style={{ textAlign: 'center', alignItems: 'center', marginTop: 70 }}>
-                  <TouchableOpacity
-                    onPress={() => navigation.push('Login')}
-                    style={styles.logoutButton}>
-                    <Text style={{ fontSize: 18, color: "white", fontWeight: "bold" }}>Entrar </Text>
-                    <View style={{ width: 10 }} />
-                    <Icon name="log-in-outline" size={30} style={{ color: '#fff' }} />
-                  </TouchableOpacity>
-                </View>
+        <>
+          <View style={styles.content}>
+            <View style={styles.container2}>
+              <Text style={styles.textMessage}>Entre na sua conta para fazer pedidos!</Text>
+              <View style={{ textAlign: 'center', alignItems: 'center', marginTop: 70 }}>
+                <TouchableOpacity
+                  onPress={() => navigation.push('Login')}
+                  style={styles.logoutButton}>
+                  <Text style={{ fontSize: 18, color: "white", fontWeight: "bold" }}>Entrar </Text>
+                  <View style={{ width: 10 }} />
+                  <Icon name="log-in-outline" size={30} style={{ color: '#fff' }} />
+                </TouchableOpacity>
               </View>
             </View>
-
+          </View>
           </>
         )}
 
@@ -373,20 +396,23 @@ const Contact = ({ navigation }) => {
           <View style={styles.viewWrapper}>
             <View style={styles.modalView}>
               <Text style={{ marginBottom: 15, fontSize: 18, fontWeight: 'bold' }}>{modalType.title}</Text>
-              <TextInput placeholder={modalType.holder}
+              <TextInput
+                placeholder={modalType.holder}
                 value={inputValue} style={styles.textInput}
-                onChangeText={(value) => setInputValue(value)} />
-              {/** This button is responsible to close the modal */}
+                onChangeText={(value) => setInputValue(value)}
+                maxLength={modalType.maxLength} 
+                keyboardType={modalType.keyboardType}
+                />
               <View style={{ flexDirection: 'row', marginTop: 15 }}>
-                <Button title="Atualizar" onPress={() => toggleModalVisibility(modalType.type)} />
+                <Button color={colors.black} title="Atualizar" onPress={() => toggleModalVisibility(modalType.type)} />
                 <View style={{ paddingLeft: 20 }} />
-                <Button title="Cancelar" onPress={toggleModalVisibility} />
+                <Button color="#ff5c5c" title="Cancelar" onPress={toggleModalVisibility} />
               </View>
             </View>
           </View>
         </Modal>
 
-      </SafeAreaView>
+      </View>
     </React.Fragment>
   )
 }

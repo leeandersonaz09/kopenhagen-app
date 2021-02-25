@@ -52,19 +52,29 @@ export default function CartItem() {
 		if (authUser) {
 
 			let counter = cart.length;
+			let pedido = [{
+				total: total,
+				status: 'ativo',
+			}];
 
 			while (counter > 0) {
 
 				cart.map(async (data) => {
-					await saveDocumentPedidos(
-						data.id,
-						{ ...data, status: 'ativo' }
-					);
-					dispatch(removeItem(data.id));
+					let id = data.id
+					//console.log(data)
+					pedido = [...pedido, {id, quantity: data.quantity}]
+			
+					dispatch(removeItem(id));
+					counter--
 				})
 
-				counter--;
-			}
+			}	
+			console.log(pedido)
+
+			await saveDocumentPedidos(
+				new Date().toLocaleString(),
+				{ pedido }
+			);
 
 			showMessage({
 				message: `Pedidos enviados com sucesso!`,
@@ -81,8 +91,7 @@ export default function CartItem() {
 
 	return (
 		<React.Fragment>
-			{cart.length > 0 ? (
-				<>
+			{cart.length > 0 ? (				
 					<ScrollView>
 						<FlatList
 							style={{ padding: 10 }}
@@ -133,7 +142,7 @@ export default function CartItem() {
 
 						</View>
 					</ScrollView>
-				</>
+			
 			) : (
 					<View style={styles.container2}>
 						<Text style={styles.textMessage}>Sem produtos no carrinho</Text>

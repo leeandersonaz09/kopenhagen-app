@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, } from 'react-native';
 import { Icon } from 'native-base';
 import styles from './styles';
 import * as firebase from 'firebase';
-import {useFirebase} from '../../config/firebase' 
+import { useFirebase } from '../../config/firebase'
 
 export default function Pedidos({ goToLogin }) {
     const { login, authUser, logout } = useFirebase();
@@ -14,7 +14,7 @@ export default function Pedidos({ goToLogin }) {
     const getData = async () => {
         setdocumentData([])
         try {
-            await dataRef.doc(firebase.auth().currentUser.uid).collection('cart')
+            await dataRef.doc(authUser.uid).collection('cart')
                 .onSnapshot(querySnapshot => {
 
                     if (!querySnapshot.empty) {
@@ -68,10 +68,10 @@ export default function Pedidos({ goToLogin }) {
                     <>
 
                         {documentData.map((data, index) =>
-                           <View>
-                               <Text>{data.title}</Text>
+                            <View key={data.id}>
+                                <Text>{data.title}</Text>
                                 <Text>{data.status}</Text>
-                           </View>
+                            </View>
                         )}
 
                     </>
@@ -87,6 +87,7 @@ export default function Pedidos({ goToLogin }) {
     }
 
     useEffect(() => {
+
         getData()
 
     }, [])

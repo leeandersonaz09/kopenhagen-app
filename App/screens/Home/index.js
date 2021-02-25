@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, SafeAreaView, TouchableOpacity, ScrollView,  ImageBackground, Text } from 'react-native';
+import { View, SafeAreaView, TouchableOpacity, ScrollView,  ImageBackground, Text, Platform } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 import styles from './styles';
 import { Category } from '../../components';
 
@@ -67,7 +68,7 @@ export default function Home({ navigation }) {
   const renderItens = () => {
 
     return (
-      <>
+      <> 
         <View style={styles.ProductContainer}>
 
           {data.map((data, index) =>
@@ -90,6 +91,7 @@ export default function Home({ navigation }) {
   return (
 
     <SafeAreaView style={styles.container}>
+      {Platform.OS === 'ios' ? <StatusBar style="light" /> : null}
       <ScrollView>
         <ImageBackground
           source={require('../../assets/homeimg.jpg')}

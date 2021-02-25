@@ -6,12 +6,8 @@ import {
     Image,
     ScrollView,
 } from 'react-native';
-//import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import { useDispatch } from 'react-redux';
-
 import { addItem } from "../../store/cart";
-
 import { showMessage } from 'react-native-flash-message';
 import { Icon} from 'native-base';
 import styles from './styles';
@@ -43,7 +39,7 @@ function ProductDetails({ route, navigation }) {
                     <Text style={styles.description}>{data.description}</Text>
                 </View>
 
-                <View style={{ textAlign: 'center', alignItems: 'center', marginTop: 70 }}>
+                <View style={{ textAlign: 'center', alignItems: 'center', marginTop: 40 }}>
                     <TouchableOpacity
                         key={data.id}
                         onPress={() => addItemCart(data)}
