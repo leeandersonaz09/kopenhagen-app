@@ -3,8 +3,10 @@ import { View, Text, TouchableOpacity, } from 'react-native';
 import { Icon } from 'native-base';
 import styles from './styles';
 import * as firebase from 'firebase';
+import {useFirebase} from '../../config/firebase' 
 
 export default function Pedidos({ goToLogin }) {
+    const { login, authUser, logout } = useFirebase();
 
     const [documentData, setdocumentData] = useState();
     const dataRef = firebase.firestore().collection('Pedidos');
@@ -93,7 +95,7 @@ export default function Pedidos({ goToLogin }) {
     return (
         <>
             {
-                firebase.auth().currentUser ? (
+                authUser ? (
                     renderData()
                 ) : (
                     renderNologgeding()
