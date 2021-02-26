@@ -64,7 +64,7 @@ export default function CartItem() {
 						id,
 						quantity: data.quantity
 					})
-					//dispatch(removeItem(id));
+					dispatch(removeItem(id));
 					counter--
 				})
 				
