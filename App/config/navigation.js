@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { View, Text } from 'react-native';
+import { View, Text, Image} from 'react-native';
 import 'react-native-gesture-handler';
 //import navigators
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-;
+import { Icon } from 'native-base';
 //icons and fonts
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Ionicons } from "@expo/vector-icons";
@@ -18,7 +18,8 @@ import ProductDetails from "../screens/ProductDetails";
 import CartScreen from "../screens/Cart";
 import LoginScreen from "../screens/Login";
 import SignUpScreen from "../screens/Signup";
-import Profile from "../screens/Contact";
+import Profile from "../screens/Profile";
+import Contact from "../screens/Contact";
 
 import Badge from '../components/Badge';
 //import styles
@@ -47,6 +48,12 @@ const HomeStackScreen = () => (
         headerStyle: {
           backgroundColor: colors.black
         },
+        headerTitle: () => (
+          <Image
+          style={{width: 120, height: '100%'}}
+          source={require('../assets/kopenhagen.png')}
+          />
+      ),
       }}
 
     />
@@ -93,9 +100,9 @@ const AppTabsScreen = () => (
 
   <AppTabs.Navigator
     initialRouteName="Home"
-    activeColor={colors.yellow}
-    inactiveColor={colors.white}
-    barStyle={{ backgroundColor: colors.black }}>
+    activeColor={colors.black}
+    inactiveColor={colors.gray_black}
+    barStyle={{ backgroundColor: colors.white }}>
 
     <AppTabs.Screen
       name="Tab1"
@@ -103,7 +110,7 @@ const AppTabsScreen = () => (
       options={{
         tabBarLabel: 'Início',
         tabBarIcon: ({ color }) => (
-          <MaterialCommunityIcons name="home" color={color} size={26} />
+          <Icon name="home-outline" type='Ionicons' style={{ color: color, fontSize: 26}} />
         ),
       }}
     />
@@ -114,7 +121,7 @@ const AppTabsScreen = () => (
         tabBarLabel: 'Carrinho',
         tabBarIcon: ({ color }) => (
           <View>
-            <MaterialCommunityIcons name="cart" color={color} size={26} />
+            <Icon name="cart-outline" type='Ionicons' style={{ color: color, fontSize: 26}} />
             <Badge />
           </View>
         ),
@@ -126,7 +133,19 @@ const AppTabsScreen = () => (
       options={{
         tabBarLabel: 'Perfil',
         tabBarIcon: ({ color }) => (
-          <MaterialCommunityIcons name="account-circle" color={color} size={26} />
+          <Icon name="person-circle-outline" type='Ionicons' style={{ color: color, fontSize: 26}} />
+        ),
+      }}
+    />
+    <AppTabs.Screen
+      name="Tab4"
+      component={Contact}
+      options={{
+        tabBarLabel: 'Contato',
+        tabBarIcon: ({ color }) => (
+          <View>
+            <Icon name="call-outline" type='Ionicons' style={{ color: color, fontSize: 26}} />
+          </View>
         ),
       }}
     />

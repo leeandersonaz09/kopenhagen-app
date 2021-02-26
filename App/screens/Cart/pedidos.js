@@ -19,19 +19,19 @@ export default function Pedidos({ goToLogin }) {
 
                     if (!querySnapshot.empty) {
 
-                        const list = [];
+                       const list = [];
 
                         querySnapshot.forEach(doc => {
-
-                            const { img, data, title, price, status } = doc.data();
+                            const { id, quantity } = doc.data();
                             list.push({
-                                id: doc.id,
-                                img,
-                                title,
-                                price,
-                                data,
-                                status: status
-                            });
+                                id,
+                                quantity,
+                                data: doc.id,
+                                total: doc.data().total,
+                                status: doc.data().status,
+                            })
+                            let mapData = Object.values(doc.data());
+                            console.log(JSON.parse(doc._document.data.toString()))
                         });
                         setdocumentData(list);
                     }
@@ -68,9 +68,10 @@ export default function Pedidos({ goToLogin }) {
                     <>
 
                         {documentData.map((data, index) =>
-                            <View key={data.id}>
-                                <Text>{data.title}</Text>
-                                <Text>{data.status}</Text>
+                            <View key={index}>
+                                {console.log(data)}
+                                <Text>{data.data}</Text>
+                                <Text>{data.total}</Text>
                             </View>
                         )}
 
@@ -88,7 +89,10 @@ export default function Pedidos({ goToLogin }) {
 
     useEffect(() => {
 
-        getData()
+        if(authUser){
+           // getData()
+        }
+        
 
     }, [])
 

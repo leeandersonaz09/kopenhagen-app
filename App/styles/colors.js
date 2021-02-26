@@ -2,6 +2,7 @@ const colors = {
   header: '#333333',
   primary: '#fbd1d2',
   gray: '#d8d8d8',
+  gray_black: '#969696',
   white: '#fff',
   yellow: "#ffcc00",
   black: '#000',

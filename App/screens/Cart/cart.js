@@ -52,28 +52,28 @@ export default function CartItem() {
 		if (authUser) {
 
 			let counter = cart.length;
-			let pedido = [{
-				total: total,
-				status: 'ativo',
-			}];
+			let pedido = [];
 
 			while (counter > 0) {
-
+				let NewItem ={}
 				cart.map(async (data) => {
 					let id = data.id
 					//console.log(data)
-					pedido = [...pedido, {id, quantity: data.quantity}]
-			
-					dispatch(removeItem(id));
+					NewItem = {id, quantity: data.quantity}
+					pedido.push({
+						id,
+						quantity: data.quantity
+					})
+					//dispatch(removeItem(id));
 					counter--
 				})
-
+				
 			}	
 			console.log(pedido)
 
 			await saveDocumentPedidos(
 				new Date().toLocaleString(),
-				{ pedido }
+				{...pedido, total: total, status:'ativo'}
 			);
 
 			showMessage({

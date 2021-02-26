@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
-import { View, Text, FlatList, SafeAreaView, TouchableOpacity } from 'react-native';
-import { Tabs, Container, Header, Tab, TabHeading, Icon, ScrollableTab } from 'native-base';
-import Item from '../../components/Item';
+import React from 'react';
+import { Text, SafeAreaView } from 'react-native';
+import { Tabs, Tab, TabHeading, Icon, ScrollableTab } from 'native-base';
 import Tab1 from './cart';
 import Tab2 from './pedidos'
 import styles from './styles';
-import { ScrollView } from 'react-native-gesture-handler';
 import colors from '../../styles/colors';
-//Platform.OS === 'ios' ? <StatusBar style="light" /> : null
+
 export default function Cart({ navigation }) {
 
 	function goToLogin() {
@@ -19,7 +17,8 @@ export default function Cart({ navigation }) {
 		return <DefaultTabBar {...props} />;
 	};
 
-	return (<>
+	return (
+		<>
 			<SafeAreaView style={{ backgroundColor: colors.black }} />
 
 			<Tabs renderTabBar={renderTabBar} tabBarBackgroundColor={colors.black} tabBarUnderlineStyle={{ backgroundColor: colors.yellow }} renderTabBar={() => <ScrollableTab />}>
