@@ -12,7 +12,7 @@ const Contact = () => {
     {
       key: "2",
       tittle: "Email",
-      link: 'mailto:contatoessensiaf@gmail.com',
+      link: 'mailto:leeandersonaz09@gmail.com',
       iconName: "ios-mail-open",
       iconColor: colors.red,
       text: "contato@gmail.com"
@@ -20,23 +20,23 @@ const Contact = () => {
     {
       key: "3",
       tittle: "Whatsapp",
-      link: 'https://api.whatsapp.com/send?phone=5574988276002&text=Ol%C3%A1%20Anna%2C%20gostaria%20de%20tirar%20uma%20d%C3%BAvida%20ou%20fazer%20um%20pedido.',
+      link: 'https://api.whatsapp.com/send?phone=5571992616055&text=Ol%C3%A1%20Anna%2C%20gostaria%20de%20tirar%20uma%20d%C3%BAvida%20ou%20fazer%20um%20pedido.',
       iconName: "logo-whatsapp",
       iconColor: colors.green,
-      text: "(71) 99999-9999"
+      text: "(71) 99261-6055"
     },
     {
       key: "4",
       tittle: "Facebook",
-      link: 'https://www.facebook.com/Ess%C3%AAncia-Feminina-2011941432372832/',
+      link: 'https://www.facebook.com/leeandersonaz09/',
       iconName: "logo-facebook",
       iconColor: colors.facebook,
-      text: "Kopenhagen"
+      text: "Kopenhagen-leeandersonaz09"
     },
     {
       key: "5",
       tittle: "Instagram",
-      link: 'https://www.instagram.com/essencia_f/',
+      link: 'https://www.instagram.com/lee_brasil/',
       iconName: "logo-instagram",
       iconColor: colors.red,
       text: "@kopenhagen"

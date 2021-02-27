@@ -14,15 +14,13 @@ import Item from '../../components/Item';
 import { Icon } from 'native-base';
 
 import { showMessage } from 'react-native-flash-message';
-import AsyncStorage from '@react-native-community/async-storage';
 import styles from './styles';
 import { ScrollView } from 'react-native-gesture-handler';
-import * as firebase from 'firebase';
 import { useFirebase } from '../../config/firebase'
 
 export default function CartItem() {
 	const { authUser, getDocument, saveDocument, saveDocumentPedidos } = useFirebase();
-	const [userData, setuserData] = useState([]);
+
 	const cart = useSelector(itemsCartSelector);
 	let total = useSelector(calculateTotalSelector).toFixed(2);
 	const dispatch = useDispatch();
