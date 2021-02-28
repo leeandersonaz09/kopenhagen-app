@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, KeyboardAvoidin
 import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
 import { Ionicons } from "@expo/vector-icons";
+import { List } from 'react-native-paper';
 import FireFunctions from "../../config/FireFunctions";
 import * as ImagePicker from "expo-image-picker";
 
@@ -34,9 +35,9 @@ export default class addProductScreen extends React.Component {
       })
       .catch(error => {
         alert(error);
-        console.log('ERRO FIREBASE ADD USER '+error)
+        console.log('ERRO FIREBASE ADD USER ' + error)
       });
-      this.props.navigation.push('Profile');
+    this.props.navigation.push('Profile');
   };
 
   pickImage = async () => {
@@ -108,7 +109,24 @@ export default class addProductScreen extends React.Component {
                 autoCorrect={false}
                 onChangeText={adress => this.setState({ adress })}
               />
-
+              <List.Section>
+                <List.Accordion
+                  title="Bairro"
+                  left={props => <List.Icon {...props} icon="folder" />}>
+                  <List.Item title="Barra" />
+                  <List.Item title="Bairro da Paz" />
+                  <List.Item title="Boca do Rio" />
+                  <List.Item title="Campo Grande" />
+                  <List.Item title="Centro" />
+                  <List.Item title="Comércio" />
+                  <List.Item title="Itapuã" />
+                  <List.Item title="Mussurunga" />
+                  <List.Item title="Piatã" />
+                  <List.Item title="Pituba" />
+                  <List.Item title="Rio Vermelho" />
+                  <List.Item title="Sussuarana" />
+                </List.Accordion>
+              </List.Section>
 
               <TextInput
                 style={styles.inputPassword}

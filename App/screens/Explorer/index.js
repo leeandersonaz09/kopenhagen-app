@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import NetInfo from '@react-native-community/netinfo';
-import { LogBox, View, SafeAreaView, TouchableOpacity, TextInput, Alert, FlatList, ActivityIndicator, Text } from 'react-native';
+import {View, SafeAreaView, TouchableOpacity, TextInput, Alert, FlatList, ActivityIndicator, Text } from 'react-native';
 import { Icon, Spinner } from 'native-base';
 import styles from './styles';
 import { colors, metrics } from '../../styles';
 import { ExplorerList} from '../../components';
 import { useFirebase } from '../../config/firebase'
-LogBox.ignoreAllLogs(true);
+
 
 function Explorer({ route, navigation }) {
   const { getDataExplorer, getmoreDataExplorer } = useFirebase();

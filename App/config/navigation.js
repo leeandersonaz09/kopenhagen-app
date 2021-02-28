@@ -115,7 +115,7 @@ const AppTabsScreen = () => (
       }}
     />
     <AppTabs.Screen
-      name="Tab2"
+      name="Cart"
       component={CartScreen}
       options={{
         tabBarLabel: 'Carrinho',
@@ -128,7 +128,7 @@ const AppTabsScreen = () => (
       }}
     />
     <AppTabs.Screen
-      name="Tab3"
+      name="Profile"
       component={StackScreen}
       options={{
         tabBarLabel: 'Perfil',
@@ -138,7 +138,7 @@ const AppTabsScreen = () => (
       }}
     />
     <AppTabs.Screen
-      name="Tab4"
+      name="Contact"
       component={Contact}
       options={{
         tabBarLabel: 'Contato',

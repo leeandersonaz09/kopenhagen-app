@@ -53,12 +53,12 @@ const useFirebase = () => {
 
   }
 
-  const getMyrequest = (documentPath, onUpdate) => {
+  const getMyrequest = (onUpdate) => {
 
     firebase.firestore()
       .collection('Pedidos')
-      .doc(authUser.uid)
-      .collection(documentPath)
+      .where("userId", "==", authUser.uid)
+      .orderBy('data', 'desc')
       .onSnapshot(onUpdate);
   }
 
@@ -79,8 +79,6 @@ const useFirebase = () => {
   const saveDocumentPedidos = (documentPath, document) => {
     firebase.firestore()
       .collection('Pedidos')
-      .doc(authUser.uid)
-      .collection('cart')
       .doc(documentPath)
       .set(document);
   }

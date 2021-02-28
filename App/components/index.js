@@ -13,6 +13,7 @@ import DetailsContainer from './DetailsContainer';
 import Badge from './Badge';
 import Item from './Item';
 import Profile from './Profile';
+import MyRequestTab from './MyRequestTab'
 
 export {
   Header,
@@ -28,5 +29,6 @@ export {
   DetailsContainer,
   Badge,
   Item,
-  Profile
+  Profile,
+  MyRequestTab
 };

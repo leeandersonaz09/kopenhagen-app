@@ -12,7 +12,8 @@ import {
 
 import Item from '../../components/Item';
 import { Icon } from 'native-base';
-
+import moment from 'moment';
+import 'moment/locale/pt-br';
 import { showMessage } from 'react-native-flash-message';
 import styles from './styles';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -67,11 +68,10 @@ export default function CartItem() {
 					counter--
 				})			
 			}	
-			console.log(pedido)
-
+			moment.locale('pt-br');
 			await saveDocumentPedidos(
-				new Date().toLocaleString(),
-				{pedido, total: total, status:'ativo'}
+				moment().format('llll'),
+				{pedido, total: total, status:'ativo', userId: authUser.uid, data: moment().format('llll')}
 			);
 
 			showMessage({
