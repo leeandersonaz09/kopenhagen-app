@@ -1,17 +1,15 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { useState, useEffect, useCallback } from 'react';
-import { OptimizedFlatList } from 'react-native-optimized-flatlist'
+import React, { useState, useEffect } from 'react';
 import NetInfo from '@react-native-community/netinfo';
 import { LogBox, View, SafeAreaView, TouchableOpacity, TextInput, Alert, FlatList, ActivityIndicator, Text } from 'react-native';
-import { Icon } from 'native-base';
-import * as firebase from 'firebase';
+import { Icon, Spinner } from 'native-base';
 import styles from './styles';
 import { colors, metrics } from '../../styles';
-import { ExplorerList, Shimmer } from '../../components';
-
+import { ExplorerList} from '../../components';
+import { useFirebase } from '../../config/firebase'
 LogBox.ignoreAllLogs(true);
 
 function Explorer({ route, navigation }) {
+  const { getDataExplorer, getmoreDataExplorer } = useFirebase();
 
   const [limit] = useState(10);
   const { category } = route.params;
@@ -28,18 +26,15 @@ function Explorer({ route, navigation }) {
 
   useEffect(() => {
 
-    const unsubscribe = getData();
-
+   const unsubscribe =  getData()
     const checkifisConnected = CheckConnectivity();
     // Unsubscribe from events when no longer in use
     return () => {
       checkifisConnected;
-      unsubscribe;
+      unsubscribe;      
     };
 
   }, []);
-
-  const dataRef = firebase.firestore().collection('Produtos').where("category", "==", category).orderBy('data', 'desc');
 
   const CheckConnectivity = async () => {
 
@@ -58,63 +53,56 @@ function Explorer({ route, navigation }) {
 
     setLoading(true);
 
-    try {
-      await dataRef.limit(limit)
-        .onSnapshot(querySnapshot => {
-          if (!querySnapshot.empty) {
-            const list = [];
+    getDataExplorer(category, limit, (querySnapshot) => {
 
-            // Get the last document
-            let lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
-            setLastVisible(lastVisible);
+      if (!querySnapshot.empty) {
+        const list = [];
 
-            querySnapshot.forEach(doc => {
+        // Get the last document
+        let lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+        setLastVisible(lastVisible);
 
-              const { img, tittle, description, price, data } = doc.data();
-              list.push({
-                id: doc.id,
-                img,
-                description,
-                title:tittle,
-                price,
-                data,
-              });
-            });
+        querySnapshot.forEach(doc => {
 
-            setdataBackup(list);
-            setdocumentData(list);
-            setTimeout(() => {
-              setLoading(false);
-            }, 2000);
+          const { img, tittle, description, price, data } = doc.data();
+          list.push({
+            id: doc.id,
+            img,
+            description,
+            title: tittle,
+            price,
+            data,
+          });
+        });
 
-          }
-        })
-    } catch (error) {
-      console.log(error)
-    }
+        setdataBackup(list);
+        setdocumentData(list);
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
 
+      } else {
+        setdocumentData(null)
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
+      }
+    })
   }
 
   // Retrieve More
   const retrieveMore = async () => {
-
     setRefreshing(true);
 
-    try {
+    getmoreDataExplorer(
+      category, limit, lastVisible,
+      (querySnapshot) => {
 
-      await dataRef.startAfter(lastVisible.data().data).limit(limit)
-        .onSnapshot(querySnapshot => {
-
-          if (querySnapshot.empty) {
-            setRefreshing(false);
-            return
-          }
-          const list = [];
-
-          // Get the last document
-          let lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
-          setLastVisible(lastVisible);
-
+        const list = [];
+        // Get the last document
+        let lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+        setLastVisible(lastVisible);
+        if (!querySnapshot.empty) {
           querySnapshot.forEach(doc => {
 
             const { img, tittle, description, price, data } = doc.data();
@@ -122,26 +110,21 @@ function Explorer({ route, navigation }) {
               id: doc.id,
               img,
               description,
-              title:tittle,
+              title: tittle,
               price,
               data,
             });
           });
-
           setdataBackup([...documentData, ...list]);
           setdocumentData([...documentData, ...list]);
           setTimeout(() => {
             setRefreshing(false);
-          }, 1000);
-
-          setRefreshing(false);
-        });
-    } catch (error) {
-      console.log(error);
-    }
-
-
-
+          }, 2000);
+        }
+      
+      }
+    )
+    setRefreshing(false);
   };
 
   //SearchBar 
@@ -182,7 +165,7 @@ function Explorer({ route, navigation }) {
       <>
         <View key={item.id} style={{ backgroundColor: '#fff' }}>
           <TouchableOpacity
-            onPress={() => navigation.push('Detalhes', item, )}
+            onPress={() => navigation.push('Detalhes', item,)}
           >
             <View style={styles.separatorContainer}>
               <ExplorerList data={item} />
@@ -191,6 +174,42 @@ function Explorer({ route, navigation }) {
         </View>
       </>
     )
+  }
+
+  const checkHaveItens = () => {
+
+    if (documentData) {
+
+      return (
+        <FlatList
+          style={{ marginBottom: 40 }}
+          data={documentData}
+          renderItem={({ item, index }) => renderItens(item, index)}
+          // On End Reached (Takes a function)
+          onEndReached={() => retrieveMore()}
+          onEndReachedThreshold={0.1}
+          keyExtractor={item => item.id}
+          refreshing={refreshing}
+          ListFooterComponent={() => renderFooter()}
+        />
+      )
+    } else {
+      return (
+        <>
+          <View style={{
+            flex: 1,
+            alignItems: 'center',
+            textAlign: 'center',
+            paddingTop: 180
+          }}>
+            <View>
+              <Text style={styles.textMessage}>Não há nenhum item nessa categoria...</Text>
+            </View>
+
+          </View>
+        </>
+      )
+    }
   }
 
   const renderFooter = () => {
@@ -203,62 +222,52 @@ function Explorer({ route, navigation }) {
   };
 
   const LoadingAnimation = () => {
-    const shimersData = [{ key: "1", width: 180, height: 180 }, { key: "2", width: 180, height: 180 }, { key: "3", width: 180, height: 180 },
-    { key: "4", width: 180, height: 180 }, { key: "5", width: 180, height: 180 }, { key: "6", width: 180, height: 180 }];
 
     return (
-
-      <View style={{ flex: 1, elevation: 1, padding: 15, flexDirection: 'row', justifyContent: 'space-between', flexWrap: 'wrap', }}>
-        { shimersData.map((item, index) =>
-          <View key={index} style={{ marginBottom: 10 }}>
-            <Shimmer width={item.width} height={item.height} />
+      <>
+        <View style={{
+          flex: 1,
+          alignItems: 'center',
+          textAlign: 'center',
+          paddingTop: 180
+        }}>
+          <View>
+            <Spinner color='red' />
+            <Text style={styles.textMessage}>Aguarde, procurando itens disponíveis...</Text>
           </View>
-        )}
-      </View>
 
+        </View>
+      </>
     )
 
   }
 
   return (
-
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <View style={[styles.SectionStyle, { backgroundColor: colors.white }]}>
-          <TouchableOpacity onPress={() => searchIconBack()}>
-            <Icon style={{ fontSize: 28, color: colors.text, marginLeft: metrics.baseMargin }} name={barIcon} />
-          </TouchableOpacity>
-          <TextInput
-            underlineColorAndroid="transparent"
-            placeholder="O que procura..."
-            placeholderTextColor="gray"
-            value={query}
-            onChange={(value) => {
-              filterItem(value);
-              //filterItem(event.target.value);
-            }}
-            style={[styles.input, { backgroundColor: colors.white, color: colors.text }]}
-          />
+    <>
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <View style={[styles.SectionStyle, { backgroundColor: colors.white }]}>
+            <TouchableOpacity onPress={() => searchIconBack()}>
+              <Icon style={{ fontSize: 28, color: colors.text, marginLeft: metrics.baseMargin }} name={barIcon} />
+            </TouchableOpacity>
+            <TextInput
+              underlineColorAndroid="transparent"
+              placeholder="O que procura..."
+              placeholderTextColor="gray"
+              value={query}
+              onChange={(value) => {
+                filterItem(value);
+                //filterItem(event.target.value);
+              }}
+              style={[styles.input, { backgroundColor: colors.white, color: colors.text }]}
+            />
+          </View>
         </View>
-      </View>
 
-      {
-        loading ? LoadingAnimation() : (
-          <FlatList
-            style={{ marginBottom: 40 }}
-            data={documentData}
-            renderItem={({ item, index }) => renderItens(item, index)}
-            // On End Reached (Takes a function)
-            onEndReached={() => retrieveMore()}
-            onEndReachedThreshold={0.1}
-            keyExtractor={item => item.id}
-            refreshing={refreshing}
-            ListFooterComponent={() => renderFooter()}
-          />
-        )
-      }
+        {loading ? (LoadingAnimation()) : (checkHaveItens())}
 
-    </SafeAreaView>
+      </SafeAreaView>
+    </>
   );
 }
 

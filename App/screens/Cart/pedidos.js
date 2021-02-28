@@ -4,80 +4,50 @@ import { ScrollView } from 'react-native-gesture-handler';
 //others imports
 import { Icon } from 'native-base';
 //firebase imports
-import * as firebase from 'firebase';
 import { useFirebase } from '../../config/firebase'
 //stylesheet import
 import styles from './styles';
 //import my componets
 import { Card } from '../../components';
-import { fonts, colors, metrics } from '../../styles';
+import { fonts, colors } from '../../styles';
 
-export const DataItem = ({ item }) => {
-
-    return (
-        <>
-            {
-                item.map((data, index) => {
-                    return (
-                        <View key={index}>
-                            <View>
-                                <Text>{data.title}</Text>
-                            </View>
-                            <View style={{ flexDirection: 'row', }}>
-                                <Text style={{ fontWeight: 'bold' }}>Quantidade:</Text>
-                                <Text> {data.quantity} </Text>
-                            </View>
-                            <View style={{ marginBottom: 10 }} />
-                        </View>
-                    )
-                })
-            }
-
-
-        </>
-    )
-}
 
 export default function Pedidos({ goToLogin }) {
-    const { login, authUser, logout } = useFirebase();
+    const {authUser, getMyrequest } = useFirebase();
 
     const [documentData, setdocumentData] = useState([]);
 
-    const dataRef = firebase.firestore().collection('Pedidos');
-
     const getData = async () => {
 
-        try {
-            await dataRef.doc(authUser.uid).collection('cart')
-                .onSnapshot(querySnapshot => {
-                    if (!querySnapshot.empty) {
+        getMyrequest(
+            "cart",
+            (result) => {
 
-                        let list = [];
+                if (!result.empty) {
 
-                        querySnapshot.forEach(doc => {
-                            let mapData = Object.values(doc.data().pedido);
-                            const { total, status } = doc.data();
+                    let list = [];
 
-                            list.push({
-                                id: doc.id,
-                                total,
-                                status,
-                                pedido: mapData
-                            })
+                    result.forEach(doc => {
+                        let mapData = Object.values(doc.data().pedido);
+                        const { total, status } = doc.data();
 
-                            // console.log(JSON.parse(doc.data().toString()))
-                        });
-                        setdocumentData(list);
+                        list.push({
+                            id: doc.id,
+                            total,
+                            status,
+                            pedido: mapData
+                        })
 
-                    } else {
-                        setdocumentData(null);
-                    }
+                    });
+                    console.log(list)
+                    setdocumentData(list);
 
-                })
-        } catch (error) {
-            console.log(error)
-        }
-
+                } else {
+                   setdocumentData(null);
+                }
+            },
+          );
+          
     }
 
     const renderNologgeding = () => {
@@ -102,7 +72,6 @@ export default function Pedidos({ goToLogin }) {
     const renderData = () => {
         return (
             <>
-
                 { documentData ? (
                     <>
                         <ScrollView>
@@ -153,10 +122,9 @@ export default function Pedidos({ goToLogin }) {
     }
 
     useEffect(() => {
-
-        if (authUser) {
-            getData()
-        }
+  
+        getData()
+  
 
     }, [])
 
@@ -174,6 +142,32 @@ export default function Pedidos({ goToLogin }) {
         </>
 
     );
+}
+
+export const DataItem = ({ item }) => {
+
+    return (
+        <>
+            {
+                item.map((data, index) => {
+                    return (
+                        <View key={index}>
+                            <View>
+                                <Text>{data.title}</Text>
+                            </View>
+                            <View style={{ flexDirection: 'row', }}>
+                                <Text style={{ fontWeight: 'bold' }}>Quantidade:</Text>
+                                <Text> {data.quantity} </Text>
+                            </View>
+                            <View style={{ marginBottom: 10 }} />
+                        </View>
+                    )
+                })
+            }
+
+
+        </>
+    )
 }
 
 const styles2 = StyleSheet.create({

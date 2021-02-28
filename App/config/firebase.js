@@ -31,38 +31,54 @@ const useFirebase = () => {
 
   }, []);
 
-  const getUsetData = ()=>{
-
-    let dataf = [];
+  const getDataExplorer = (category, limit, onUpdate) => {
 
     firebase.firestore()
-      .collection("users")
-      .doc(authUser.uid)
-      .get()
-      .then(doc => {
-        dataf = doc.data()
-      });
+      .collection('Produtos')
+      .where("category", "==", category)
+      .orderBy('data', 'desc')
+      .limit(limit)
+      .onSnapshot(onUpdate);
 
-      return dataf
+  }
+  const getmoreDataExplorer = (category, limit, lastVisible, onUpdate) => {
+
+    firebase.firestore()
+      .collection('Produtos')
+      .where("category", "==", category)
+      .orderBy('data', 'desc')
+      .startAfter(lastVisible.data().data)
+      .limit(limit)
+      .onSnapshot(onUpdate);
+
+  }
+
+  const getMyrequest = (documentPath, onUpdate) => {
+
+    firebase.firestore()
+      .collection('Pedidos')
+      .doc(authUser.uid)
+      .collection(documentPath)
+      .onSnapshot(onUpdate);
   }
 
   const getDocument = (documentPath, onUpdate) => {
     firebase.firestore()
-    .collection('users')
+      .collection('users')
       .doc(documentPath)
       .onSnapshot(onUpdate);
   }
 
   const saveDocument = (documentPath, document) => {
     firebase.firestore()
-    .collection('users')
+      .collection('users')
       .doc(documentPath)
       .update(document);
   }
 
   const saveDocumentPedidos = (documentPath, document) => {
     firebase.firestore()
-    .collection('Pedidos')
+      .collection('Pedidos')
       .doc(authUser.uid)
       .collection('cart')
       .doc(documentPath)
@@ -73,7 +89,7 @@ const useFirebase = () => {
 
   const logout = useCallback(() => firebase.auth().signOut(), [])
 
-  return { login, authUser, logout, getDocument, saveDocument, saveDocumentPedidos }
+  return { login, authUser, logout, getDocument, saveDocument, saveDocumentPedidos, getMyrequest, getDataExplorer, getmoreDataExplorer }
 }
 
 export { useFirebase }

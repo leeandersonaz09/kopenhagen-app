@@ -3,7 +3,6 @@ import { colors, fonts } from '../../styles';
 
 const styles = StyleSheet.create({
   Container: {
-    flex: 1,
     backgroundColor: colors.white,
   },
   ProductContainer: {
@@ -57,7 +56,12 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginVertical: 20,
   },
-
+  textMessage: {
+		color: 'red',
+		fontSize: 16,
+    fontFamily:fonts.SFP_regular
+	},
+  
 });
 
 export default styles;
