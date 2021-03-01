@@ -1,8 +1,8 @@
 import React from "react";
-import {SafeAreaView, Platform} from 'react-native'
+import {SafeAreaView, Platform, LogBox} from 'react-native'
 import { StatusBar } from 'expo-status-bar';
 import FlashMessage from 'react-native-flash-message';
-
+LogBox.ignoreAllLogs();//Ignore all log notifications
 import Navigation from "./config/navigation";
 
 import { Provider } from 'react-redux';

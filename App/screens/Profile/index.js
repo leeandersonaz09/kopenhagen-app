@@ -14,6 +14,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { Text } from '../../components';
 import styles from './styles';
 import Lottie from 'lottie-react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 //Lottie File 
 import dataloading from '../../loaders/photo.json';
 import FireFunctions from "../../config/FireFunctions";
@@ -33,13 +34,29 @@ const Profile = ({ navigation }) => {
   const [modalType, setmodalType] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const [keyboardType, setkeyboardType] = useState('');
+  const [objData, setobjData] = useState({});
 
-  const handleGet = () => {
+  const handleGet = async () => {
 
-    getDocument(
+    await getDocument(
       authUser.uid,
-      (result) => setuserData(result.data()),
-    );
+      (result) => setuserData(result.data(),
+        setobjData({
+          city: result.data().cidade,
+          bairro: result.data().bairro,
+          Adress: result.data().adress
+        }),
+        AsyncStorage.setItem('UserAdress',JSON.stringify(objData)),
+        AsyncStorage.getItem('UserAdress').then((UserAdress)=>{
+         
+            const cartfood = JSON.parse(UserAdress)
+            console.log(cartfood)
+ 
+        })
+      ),
+    )
+
+  
 
   }
 
@@ -158,6 +175,7 @@ const Profile = ({ navigation }) => {
     };
     if (authUser) {
       handleGet()
+
     }
 
   }, [])
@@ -215,7 +233,7 @@ const Profile = ({ navigation }) => {
   const renderIfuser = () => {
 
     return (
-      <> 
+      <>
         <View style={styles.content}>
           <View style={styles.Section}>
             <View>
@@ -227,7 +245,7 @@ const Profile = ({ navigation }) => {
                   title: 'Atualizar Nome',
                   holder: "Digite seu nome...",
                   type: "name",
-                  keyboardType:"default",
+                  keyboardType: "default",
                   maxLength: 100,
                 })
                 setModalVisible(!isModalVisible);
@@ -264,7 +282,7 @@ const Profile = ({ navigation }) => {
                   title: 'Atualizar Endereço',
                   holder: "Digite seu endereço...",
                   type: "adress",
-                  keyboardType:"default",
+                  keyboardType: "default",
                   maxLength: 100,
                 })
                 setModalVisible(!isModalVisible);
@@ -367,24 +385,24 @@ const Profile = ({ navigation }) => {
             elevation: 1,
           }} />
         </TouchableOpacity>
-      ):null}
+      ) : null}
       <View style={styles.Container}>
         {authUser ? (renderIfuser()) : (
-        <>
-          <View style={styles.content}>
-            <View style={styles.container2}>
-              <Text style={styles.textMessage}>Entre na sua conta para fazer pedidos!</Text>
-              <View style={{ textAlign: 'center', alignItems: 'center', marginTop: 70 }}>
-                <TouchableOpacity
-                  onPress={() => navigation.push('Login')}
-                  style={styles.logoutButton}>
-                  <Text style={{ fontSize: 18, color: "white", fontWeight: "bold" }}>Entrar </Text>
-                  <View style={{ width: 10 }} />
-                  <Icon name="log-in-outline" size={30} style={{ color: '#fff' }} />
-                </TouchableOpacity>
+          <>
+            <View style={styles.content}>
+              <View style={styles.container2}>
+                <Text style={styles.textMessage}>Entre na sua conta para fazer pedidos!</Text>
+                <View style={{ textAlign: 'center', alignItems: 'center', marginTop: 70 }}>
+                  <TouchableOpacity
+                    onPress={() => navigation.push('Login')}
+                    style={styles.logoutButton}>
+                    <Text style={{ fontSize: 18, color: "white", fontWeight: "bold" }}>Entrar </Text>
+                    <View style={{ width: 10 }} />
+                    <Icon name="log-in-outline" size={30} style={{ color: '#fff' }} />
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
-          </View>
           </>
         )}
 
@@ -399,9 +417,9 @@ const Profile = ({ navigation }) => {
                 placeholder={modalType.holder}
                 value={inputValue} style={styles.textInput}
                 onChangeText={(value) => setInputValue(value)}
-                maxLength={modalType.maxLength} 
+                maxLength={modalType.maxLength}
                 keyboardType={modalType.keyboardType}
-                />
+              />
               <View style={{ flexDirection: 'row', marginTop: 15 }}>
                 <Button color={colors.black} title="Atualizar" onPress={() => toggleModalVisibility(modalType.type)} />
                 <View style={{ paddingLeft: 20 }} />

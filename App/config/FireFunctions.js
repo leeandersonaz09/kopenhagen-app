@@ -4,7 +4,7 @@ import * as firebase from 'firebase'
 class FireFunctions {
 
     //Criar um novo usuário e atualizar os campos de profile
-    addUser = async ({ username, email, phone_number, adress, password, localUri }) => {
+    addUser = async ({ username, email, phone_number, adress, password, localUri, cidade, bairro }) => {
 
 
         return new Promise((res, rej) => {
@@ -19,14 +19,14 @@ class FireFunctions {
                     this.firestore
                         .collection('users') //Coleção raiz
                         .doc(this.uid) //Documento usuário único para cada usuário com seu uid
-                        .collection('profile')
-                        .doc('personal') // dentro do documento 'personal' adiciona os campos abaixo
                         .set({
                             name: username,
                             phone: phone_number,
                             adress: adress,
                             email: email,
-                            img: remoteUri
+                            img: remoteUri,
+                            cidade: cidade,
+                            bairro: bairro
 
                         })
                         .then(() => {

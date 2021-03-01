@@ -69,6 +69,13 @@ const useFirebase = () => {
       .onSnapshot(onUpdate);
   }
 
+  const getDocumentFrete = (documentPath, onUpdate) => {
+    firebase.firestore()
+      .collection('Frete')
+      .doc(documentPath)
+      .onSnapshot(onUpdate);
+  }
+
   const saveDocument = (documentPath, document) => {
     firebase.firestore()
       .collection('users')
@@ -87,7 +94,7 @@ const useFirebase = () => {
 
   const logout = useCallback(() => firebase.auth().signOut(), [])
 
-  return { login, authUser, logout, getDocument, saveDocument, saveDocumentPedidos, getMyrequest, getDataExplorer, getmoreDataExplorer }
+  return { login, authUser, logout, getDocumentFrete, getDocument, saveDocument, saveDocumentPedidos, getMyrequest, getDataExplorer, getmoreDataExplorer }
 }
 
 export { useFirebase }
