@@ -7,7 +7,8 @@ import {
   Modal,
   TextInput,
   Button,
-  Platform
+  Platform,
+  Picker
 } from 'react-native';
 import { Icon } from 'native-base';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -27,7 +28,8 @@ import { useFirebase } from '../../config/firebase'
 
 const Profile = ({ navigation }) => {
   const { authUser, logout, getDocument, saveDocument } = useFirebase();
-
+  const [bairro, setbairro] = useState("barra");
+  const [city, setcity] = useState('salvador');
   const [userData, setuserData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
@@ -36,29 +38,26 @@ const Profile = ({ navigation }) => {
   const [keyboardType, setkeyboardType] = useState('');
   const [objData, setobjData] = useState({});
 
-  const handleGet = async () => {
+  const handleGet = () => {
 
-    await getDocument(
+    getDocument(
       authUser.uid,
       (result) => setuserData(result.data(),
+
         setobjData({
           city: result.data().cidade,
           bairro: result.data().bairro,
           Adress: result.data().adress
         }),
-        AsyncStorage.setItem('UserAdress',JSON.stringify(objData)),
-        AsyncStorage.getItem('UserAdress').then((UserAdress)=>{
-         
-            const cartfood = JSON.parse(UserAdress)
-            console.log(cartfood)
- 
-        })
+
+
+
       ),
     )
-
-  
-
+    AsyncStorage.setItem('UserAdress', JSON.stringify(objData))
   }
+
+  AsyncStorage.setItem('UserAdress', JSON.stringify(objData))
 
   const ErroAlert = (err) => {
     showMessage({
@@ -175,7 +174,6 @@ const Profile = ({ navigation }) => {
     };
     if (authUser) {
       handleGet()
-
     }
 
   }, [])
@@ -410,27 +408,78 @@ const Profile = ({ navigation }) => {
           transparent visible={isModalVisible}
           presentationStyle="overFullScreen"
           onDismiss={toggleModalVisibility}>
-          <View style={styles.viewWrapper}>
-            <View style={styles.modalView}>
-              <Text style={{ marginBottom: 15, fontSize: 18, fontWeight: 'bold' }}>{modalType.title}</Text>
-              <TextInput
-                placeholder={modalType.holder}
-                value={inputValue} style={styles.textInput}
-                onChangeText={(value) => setInputValue(value)}
-                maxLength={modalType.maxLength}
-                keyboardType={modalType.keyboardType}
-              />
-              <View style={{ flexDirection: 'row', marginTop: 15 }}>
-                <Button color={colors.black} title="Atualizar" onPress={() => toggleModalVisibility(modalType.type)} />
-                <View style={{ paddingLeft: 20 }} />
-                <Button color="#ff5c5c" title="Cancelar" onPress={toggleModalVisibility} />
+          {modalType.type == 'adress' ? (
+            <View style={{flex:1}}>
+              <View style={styles.modalViewAdress}>
+                <Text style={{ marginBottom: 15, fontSize: 18, fontWeight: 'bold' }}>{modalType.title}</Text>
+
+                <View style={{ flexDirection: 'row', paddingVertical:10, alignContent:'center', alignItems:'center', justifyContent:'space-between' }}>
+                <View style={{borderWidth:1, borderColor:colors.gray, borderRadius:40}}>
+                  <Picker
+                    selectedValue={bairro}
+                    style={styles.onePicker}
+                    itemStyle={styles.onePickerItem}
+                    onValueChange={(itemValue, itemIndex) => setbairro(itemValue)}
+                  >
+                    <Picker.Item label="Barra" value="Barra" />
+                    <Picker.Item label="Bairro da Paz" value="Bairro da Paz" />
+                    <Picker.Item label="Boca do Rio" value="Boca do Rio" />
+                    <Picker.Item label="Campo Grande" value="Campo Grande" />
+                    <Picker.Item label="Centro" value="Centro" />
+                    <Picker.Item label="Comércio" value="Comércio" />
+                    <Picker.Item label="Itapuã" value="Itapuã" />
+                    <Picker.Item label="Mussurunga" value="Mussurunga" />
+                    <Picker.Item label="Piatã" value="Piatã" />
+                    <Picker.Item label="Pituba" value="Pituba" />
+                    <Picker.Item label="Rio Vermelho" value="Rio Vermelho" />
+                    <Picker.Item label="Sussuarana" value="Sussuarana" />
+                    <Picker.Item label="Ondina" value="Ondina" />
+                  </Picker>
+                </View>
+                <View style={{borderWidth:1, borderColor:colors.gray, borderRadius:40}}>
+                  <Picker
+                    selectedValue={city}
+                    style={styles.onePicker}
+                    itemStyle={styles.onePickerItem}
+                    onValueChange={(itemValue) => setcity(itemValue)}
+                  >
+                    <Picker.Item label="Salvador" value="Salvador" />
+
+                  </Picker>
+                </View>
+              </View>
+
+                <View style={{ flexDirection: 'row', marginTop: 15 }}>
+                  <Button color={colors.black} title="Atualizar" onPress={() => toggleModalVisibility(modalType.type)} />
+                  <View style={{ paddingLeft: 20 }} />
+                  <Button color="#ff5c5c" title="Cancelar" onPress={toggleModalVisibility} />
+                </View>
               </View>
             </View>
-          </View>
+          ) : (
+            <View style={styles.viewWrapper}>
+              <View style={styles.modalView}>
+                <Text style={{ marginBottom: 15, fontSize: 18, fontWeight: 'bold' }}>{modalType.title}</Text>
+
+                <TextInput
+                  placeholder={modalType.holder}
+                  value={inputValue} style={styles.textInput}
+                  onChangeText={(value) => setInputValue(value)}
+                  maxLength={modalType.maxLength}
+                  keyboardType={modalType.keyboardType}
+                />
+                <View style={{ flexDirection: 'row', marginTop: 15 }}>
+                  <Button color={colors.black} title="Atualizar" onPress={() => toggleModalVisibility(modalType.type)} />
+                  <View style={{ paddingLeft: 20 }} />
+                  <Button color="#ff5c5c" title="Cancelar" onPress={toggleModalVisibility} />
+                </View>
+              </View>
+            </View>
+          )}
         </Modal>
 
       </View>
-    </React.Fragment>
+    </React.Fragment >
   )
 }
 

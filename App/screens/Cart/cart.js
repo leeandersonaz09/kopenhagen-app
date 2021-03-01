@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, SafeAreaView, TouchableOpacity } from 'react-native';
 //Redux
 import { useSelector, useDispatch } from 'react-redux';
@@ -19,42 +19,40 @@ import { showMessage } from 'react-native-flash-message';
 import styles from './styles';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useFirebase } from '../../config/firebase'
+import fonts from '../../styles/fonts';
 
 export default function CartItem() {
-	const { authUser, getDocumentFrete, saveDocumentPedidos } = useFirebase();
 
+	const { authUser, getDocumentFrete, saveDocumentPedidos } = useFirebase();
 	const cart = useSelector(itemsCartSelector);
-	let total = useSelector(calculateTotalSelector).toFixed(2);
 	const dispatch = useDispatch();
-	const [frete, setFrete] = useState('0.00');
-	const [userAdress, setuserAdress] = useState({})
-	/*
-		if (cart.length > 0) {
-	
-			AsyncStorage.getItem('UserAdress').then((UserAdress) => {
-				setuserAdress(JSON.parse(UserAdress))
-			})
-	
+	const [frete, setFrete] = useState(0.00);
+	const [userAdress, setuserAdress] = useState({});
+	const subtotal = useSelector(calculateTotalSelector).toFixed(2);
+	let tlt = parseFloat(subtotal) + parseFloat(frete)
+	let total = tlt.toFixed(2)
+
+	useEffect(() => {
+
+		AsyncStorage.getItem('UserAdress').then((UserAdress) => {
+			setuserAdress(JSON.parse(UserAdress))
+			//console.log(JSON.parse(UserAdress))
+		}).then(() => {
 			getDocumentFrete(
-				'Bairros',
+				userAdress.bairro,
 				(result) => {
-	
+					const Val = result.data().valor
+
 					if (!result.empty) {
-	
-						result.forEach(doc => {
-	
-							console.log(doc.Data())
-	
-						});
-	
-	
-					} else {
-	
+						setFrete(parseFloat(Val))
 					}
+
 				},
 			)
-		}
-	*/
+		})
+
+	}, [])
+
 	function removeItemCart(item) {
 		//console.log(item.id);
 		dispatch(removeItem(item.id));
@@ -66,7 +64,7 @@ export default function CartItem() {
 	}
 
 	function onChangeQuan(item, type) {
-
+		
 		if (type) {
 			dispatch(incrementItem(item));
 		}
@@ -126,34 +124,40 @@ export default function CartItem() {
 						data={cart}
 						renderItem={({ item }) => <Item
 							item={item}
-							onDecrement={() => onChangeQuan(item, false)}
-							onIncrement={() => onChangeQuan(item, true)}
+							onDecrement={() => onChangeQuan(item, false) }
+							onIncrement={() => onChangeQuan(item, true)  }
 							removeItemCart={() => removeItemCart(item)} />}
 					/>
 					<View style={styles.totalContainer}>
 
 						<View style={styles.totalSection}>
+							<View style={[styles.divider,]} />
+							<Text style={[styles.textsubTotal, { paddingTop: 15, paddingBottom: 20, alignSelf: 'center' }]}>
+								<Text style={{fontFamily:fonts.SFP_bold}}>End. de entrega: </Text>{userAdress.Adress} {'-'} {userAdress.bairro}{','} {userAdress.city}
+							</Text>
 
 							<Text style={styles.totalText}>Total</Text>
 
 							<View style={styles.subTotalSection}>
 								<Text style={styles.textsubTotal}>Sub Total</Text>
 								<View style={styles.divider} />
-								<Text style={styles.pricesubTotal}>R${total}</Text>
+								<Text style={styles.pricesubTotal}>R${subtotal}</Text>
 							</View>
 
 							<View style={styles.subTotalSection}>
 								<Text style={styles.textsubTotal}>Frete</Text>
 								<View style={styles.divider} />
-								<Text style={styles.pricesubTotal}>R$10</Text>
+								<Text style={styles.pricesubTotal}>R${frete}</Text>
 							</View>
 
 							<View style={styles.subTotalSection}>
 								<Text style={styles.textsubTotal}>Total</Text>
 								<View style={styles.divider} />
-								<Text style={styles.pricesubTotal}>R${total}</Text>
+								<Text style={styles.pricesubTotal}>R${ total}</Text>
 							</View>
 
+							<Text style={[styles.textsubTotal, { paddingTop: 15, alignSelf: 'center' }]}>*O valor do frete está sujeito a mudança sem prévio aviso!</Text>
+							<Text style={[styles.textsubTotal, { alignSelf: 'center' }]}>Caso haja erro ou dúvida no valor do frete, nos contate!</Text>
 						</View>
 
 						<View style={styles.buttonSection}>
@@ -171,10 +175,10 @@ export default function CartItem() {
 				</ScrollView>
 
 			) : (
-					<View style={styles.container2}>
-						<Text style={styles.textMessage}>Sem produtos no carrinho</Text>
-					</View>
-				)}
+				<View style={styles.container2}>
+					<Text style={styles.textMessage}>Sem produtos no carrinho</Text>
+				</View>
+			)}
 		</React.Fragment>
 	);
 }

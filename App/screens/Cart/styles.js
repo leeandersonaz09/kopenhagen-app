@@ -40,7 +40,8 @@ export default StyleSheet.create({
 	},
 	totalText: {
 		fontSize: 28,
-		fontWeight: 'bold'
+		fontWeight: 'bold',
+		fontFamily: fonts.SFP_bold
 	},
 	subTotalSection: {
 		flexDirection: 'row',
@@ -49,6 +50,7 @@ export default StyleSheet.create({
 	},
 	textsubTotal: {
 		fontSize: 14,
+		fontFamily: fonts.SFP_regular
 	},
 	pricesubTotal: {
 		fontSize: 18,

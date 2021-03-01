@@ -69,7 +69,7 @@ const useFirebase = () => {
       .onSnapshot(onUpdate);
   }
 
-  const getDocumentFrete = (documentPath, onUpdate) => {
+  const getDocumentFrete = (documentPath , onUpdate) => {
     firebase.firestore()
       .collection('Frete')
       .doc(documentPath)
