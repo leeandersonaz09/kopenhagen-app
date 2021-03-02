@@ -28,8 +28,9 @@ import { useFirebase } from '../../config/firebase'
 
 const Profile = ({ navigation }) => {
   const { authUser, logout, getDocument, saveDocument } = useFirebase();
-  const [bairro, setbairro] = useState("barra");
-  const [city, setcity] = useState('salvador');
+  const [bairro, setbairro] = useState("Barra");
+  const [city, setcity] = useState('Salvador');
+  const [adress, setadress] = useState("")
   const [userData, setuserData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
@@ -91,12 +92,12 @@ const Profile = ({ navigation }) => {
 
     if (type === 'adress') {
 
-      keyboardType = 'default'
-
       try {
         saveDocument(
           authUser.uid,
-          { adress: inputValue }
+          { adress: adress,
+            cidade: city,
+            bairro: bairro} 
         );
         showMessage({
           message: `${'Seu Endereço ' + inputValue} foi alterado com sucesso`,
@@ -228,6 +229,69 @@ const Profile = ({ navigation }) => {
     }
   };
 
+  const changeAdress = () => {
+    return (
+      <View style={{
+        flex: 1,
+        backgroundColor: '#fff',
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}>
+        <Text style={{ marginBottom: 35, fontSize: 18, fontWeight: 'bold' }}>{modalType.title}</Text>
+        <View style={styles.filds}>
+
+          <TextInput
+            style={styles.inputadress}
+            value={adress}
+            placeholder="Endereço"
+            autoCorrect={false}
+            onChangeText={adress => setadress(adress)}
+          />
+          <View style={{ flexDirection: 'row', paddingVertical: 10, alignContent: 'center', alignItems: 'center', justifyContent: 'space-between' }}>
+            <View style={{ borderWidth: 1, borderColor: colors.gray, borderRadius: 40 }}>
+              <Picker
+                selectedValue={bairro}
+                style={styles.onePicker}
+                itemStyle={styles.onePickerItem}
+                onValueChange={(itemValue, itemIndex) => setbairro(itemValue)}
+              >
+                <Picker.Item label="Barra" value="Barra" />
+                <Picker.Item label="Bairro da Paz" value="Bairro da Paz" />
+                <Picker.Item label="Boca do Rio" value="Boca do Rio" />
+                <Picker.Item label="Campo Grande" value="Campo Grande" />
+                <Picker.Item label="Centro" value="Centro" />
+                <Picker.Item label="Comércio" value="Comércio" />
+                <Picker.Item label="Itapuã" value="Itapuã" />
+                <Picker.Item label="Mussurunga" value="Mussurunga" />
+                <Picker.Item label="Piatã" value="Piatã" />
+                <Picker.Item label="Pituba" value="Pituba" />
+                <Picker.Item label="Rio Vermelho" value="Rio Vermelho" />
+                <Picker.Item label="Sussuarana" value="Sussuarana" />
+                <Picker.Item label="Ondina" value="Ondina" />
+              </Picker>
+            </View>
+            <View style={{ borderWidth: 1, borderColor: colors.gray, borderRadius: 40 }}>
+              <Picker
+                selectedValue={city}
+                style={styles.onePicker}
+                itemStyle={styles.onePickerItem}
+                onValueChange={(itemValue) => setcity(itemValue)}
+              >
+                <Picker.Item label="Salvador" value="Salvador" />
+
+              </Picker>
+            </View>
+          </View>
+        </View>
+        <View style={{ flexDirection: 'row', marginTop: 15, }}>
+          <Button color={colors.black} title="Atualizar" onPress={() => toggleModalVisibility(modalType.type)} />
+          <View style={{ paddingLeft: 20 }} />
+          <Button color="#ff5c5c" title="Cancelar" onPress={toggleModalVisibility} />
+        </View>
+      </View>
+    )
+  }
+
   const renderIfuser = () => {
 
     return (
@@ -268,7 +332,7 @@ const Profile = ({ navigation }) => {
                 <Text
                   nnumberOfLines={1}
                   style={styles.adress}>
-                  {userData.adress}
+                  {userData.adress} - {userData.bairro}, {userData.cidade} - Bahia
                 </Text>
               </View>
 
@@ -409,53 +473,7 @@ const Profile = ({ navigation }) => {
           presentationStyle="overFullScreen"
           onDismiss={toggleModalVisibility}>
           {modalType.type == 'adress' ? (
-            <View style={{flex:1}}>
-              <View style={styles.modalViewAdress}>
-                <Text style={{ marginBottom: 15, fontSize: 18, fontWeight: 'bold' }}>{modalType.title}</Text>
-
-                <View style={{ flexDirection: 'row', paddingVertical:10, alignContent:'center', alignItems:'center', justifyContent:'space-between' }}>
-                <View style={{borderWidth:1, borderColor:colors.gray, borderRadius:40}}>
-                  <Picker
-                    selectedValue={bairro}
-                    style={styles.onePicker}
-                    itemStyle={styles.onePickerItem}
-                    onValueChange={(itemValue, itemIndex) => setbairro(itemValue)}
-                  >
-                    <Picker.Item label="Barra" value="Barra" />
-                    <Picker.Item label="Bairro da Paz" value="Bairro da Paz" />
-                    <Picker.Item label="Boca do Rio" value="Boca do Rio" />
-                    <Picker.Item label="Campo Grande" value="Campo Grande" />
-                    <Picker.Item label="Centro" value="Centro" />
-                    <Picker.Item label="Comércio" value="Comércio" />
-                    <Picker.Item label="Itapuã" value="Itapuã" />
-                    <Picker.Item label="Mussurunga" value="Mussurunga" />
-                    <Picker.Item label="Piatã" value="Piatã" />
-                    <Picker.Item label="Pituba" value="Pituba" />
-                    <Picker.Item label="Rio Vermelho" value="Rio Vermelho" />
-                    <Picker.Item label="Sussuarana" value="Sussuarana" />
-                    <Picker.Item label="Ondina" value="Ondina" />
-                  </Picker>
-                </View>
-                <View style={{borderWidth:1, borderColor:colors.gray, borderRadius:40}}>
-                  <Picker
-                    selectedValue={city}
-                    style={styles.onePicker}
-                    itemStyle={styles.onePickerItem}
-                    onValueChange={(itemValue) => setcity(itemValue)}
-                  >
-                    <Picker.Item label="Salvador" value="Salvador" />
-
-                  </Picker>
-                </View>
-              </View>
-
-                <View style={{ flexDirection: 'row', marginTop: 15 }}>
-                  <Button color={colors.black} title="Atualizar" onPress={() => toggleModalVisibility(modalType.type)} />
-                  <View style={{ paddingLeft: 20 }} />
-                  <Button color="#ff5c5c" title="Cancelar" onPress={toggleModalVisibility} />
-                </View>
-              </View>
-            </View>
+            changeAdress()
           ) : (
             <View style={styles.viewWrapper}>
               <View style={styles.modalView}>

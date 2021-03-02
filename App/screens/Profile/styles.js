@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
   adress: {
     fontSize: fonts.regular,
     marginLeft: 8,
+    marginRight:5,
     flexWrap: 'wrap',
     fontFamily: fonts.Roboto_medium
   },
@@ -141,6 +142,31 @@ const styles = StyleSheet.create({
     borderColor: "rgba(0, 0, 0, 0.2)",
     borderWidth: 1,
     marginBottom: 8,
+  },
+  onePicker: {
+    width: 170,
+    height: 44,
+    borderColor: colors.black,
+    borderWidth: 1,
+  },
+  onePickerItem: {
+    height: 14,
+    color: colors.red
+  },
+  filds: {
+    alignSelf: 'stretch',
+    paddingHorizontal: 30,
+    marginBottom: 40
+  },
+  inputadress: {
+    borderWidth: 1,
+    borderColor: '#DDD',
+    paddingHorizontal: 10,
+    fontSize: 16,
+    color: '#444',
+    height: 44,
+    marginBottom: 10,
+    borderRadius: 20
   },
 
 });
