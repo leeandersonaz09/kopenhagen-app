@@ -36,10 +36,10 @@ export default function CartItem() {
 	const handleGet = useCallback(() => {
 		if (authUser && cart.length > 0) {
 
-			console.log(userAdress);
+			//console.log(userAdress);
 			AsyncStorage.getItem('UserAdress').then((UserAdress) => {
 				setuserAdress(JSON.parse(UserAdress))
-				console.log(userAdress)
+				//console.log(userAdress)
 			}).then(() => {
 
 				getDocumentFrete(
