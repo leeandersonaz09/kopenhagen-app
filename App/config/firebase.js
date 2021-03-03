@@ -30,6 +30,13 @@ const useFirebase = () => {
 
   }, []);
 
+  const getBanner = (documentPath, onUpdate) => {
+    firebase.firestore()
+      .collection('Banner')
+      .doc(documentPath)
+      .onSnapshot(onUpdate);
+  }
+
   const getDataExplorer = (category, limit, onUpdate) => {
 
     firebase.firestore()
@@ -93,7 +100,7 @@ const useFirebase = () => {
 
   const logout = useCallback(() => firebase.auth().signOut(), [])
 
-  return { login, authUser, logout, getDocumentFrete, getDocument, saveDocument, saveDocumentPedidos, getMyrequest, getDataExplorer, getmoreDataExplorer }
+  return { login, authUser, logout, getDocumentFrete, getDocument, saveDocument, saveDocumentPedidos, getMyrequest, getDataExplorer, getmoreDataExplorer, getBanner }
 }
 
 export { useFirebase }

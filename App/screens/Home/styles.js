@@ -31,22 +31,25 @@ const styles = StyleSheet.create({
   },
   backgrounImage: {
     width: '100%',
-    height: 170,
+    height: 100,
+    paddingRight:40,
+    marginLeft:20
   },
 
   darkOverlay: {
     position: 'absolute',
     top: 0,
-    right: 0,
+    right: 40,
     left: 0,
-    height: 170,
+    height: 100,
     backgroundColor: colors.black,
     opacity: 0.2,
-    borderBottomRightRadius: 45
+    borderRadius: 25,
+    paddingRight:10,
   },
 
   imageContainer: {
-    paddingTop: 50,
+    paddingTop: 30,
     paddingLeft: 16
   },
 
@@ -65,3 +68,4 @@ const styles = StyleSheet.create({
 });
 
 export default styles;
+

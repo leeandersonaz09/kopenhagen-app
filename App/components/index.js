@@ -13,7 +13,8 @@ import DetailsContainer from './DetailsContainer';
 import Badge from './Badge';
 import Item from './Item';
 import Profile from './Profile';
-import MyRequestTab from './MyRequestTab'
+import MyRequestTab from './MyRequestTab';
+import Banner from './SwipeBanner';
 
 export {
   Header,
@@ -30,5 +31,6 @@ export {
   Badge,
   Item,
   Profile,
-  MyRequestTab
+  MyRequestTab,
+  Banner
 };

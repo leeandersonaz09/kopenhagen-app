@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     left: 0,
     height: 180,
     backgroundColor: colors.black,
-    opacity: 0.5,
+    opacity: 0.3,
     borderRadius:10
 
   },

@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, SafeAreaView, TouchableOpacity, ScrollView,  ImageBackground, Text, Platform } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import styles from './styles';
-import { Category } from '../../components';
-
+import { Category, Banner } from '../../components';
 export default function Home({ navigation }) {
 
   const [data, setData] = useState([]);
@@ -93,19 +92,22 @@ export default function Home({ navigation }) {
     <SafeAreaView style={styles.container}>
       {Platform.OS === 'ios' ? <StatusBar style="light" /> : null}
       <ScrollView>
+        <View style={{paddingTop:20}}/>
+      <Banner/>
         <ImageBackground
           source={require('../../assets/homeimg.jpg')}
           style={styles.backgrounImage}
-          imageStyle={{ borderBottomRightRadius: 45 }}
+          imageStyle={{ borderRadius: 25 }}
         >
           <View style={styles.darkOverlay}></View>
           <View style={styles.imageContainer}>
             <Text style={styles.UserGreat}>Categorias</Text>
-           
           </View>
 
         </ImageBackground>
+        
         {renderItens()}
+        
       </ScrollView>
     </SafeAreaView>
   );

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
   View,
-  SafeAreaView,
   Image,
   TouchableOpacity,
   Modal,
@@ -16,6 +15,7 @@ import { Text } from '../../components';
 import styles from './styles';
 import Lottie from 'lottie-react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import NetInfo from '@react-native-community/netinfo';
 //Lottie File 
 import dataloading from '../../loaders/photo.json';
 import FireFunctions from "../../config/FireFunctions";
@@ -38,20 +38,28 @@ const Profile = ({ navigation }) => {
   const [inputValue, setInputValue] = useState("");
   const [keyboardType, setkeyboardType] = useState('');
 
-  const handleGet = () => {
+  const handleGet = React.useCallback(() => {
+    try {
+      getDocument(
+        authUser.uid,
+        (result) => {
+          setuserData(result.data());
 
-    getDocument(
-      authUser.uid,
-      (result) => setuserData(result.data(),  
-      AsyncStorage.setItem('UserAdress', JSON.stringify({
-        city: result.data().cidade,
-        bairro: result.data().bairro,
-        Adress: result.data().adress
-      }))),
-      
-    )
-   
-  }
+          AsyncStorage.setItem('UserAdress', JSON.stringify({
+            city: result.data().cidade,
+            bairro: result.data().bairro,
+            Adress: result.data().adress
+          }))
+
+        }
+      )
+    } catch (error) {
+      ErroAlert(error)
+    }
+
+  }, [authUser, userData, modalType])
+
+  
 
   const ErroAlert = (err) => {
     showMessage({
@@ -61,6 +69,19 @@ const Profile = ({ navigation }) => {
       duration: 2800
     });
   }
+
+  const CheckConnectivity = async () => {
+
+    await NetInfo.fetch().then(state => {
+
+      if (state.isConnected) {
+        //Alert.alert("You are online!");
+      } else {
+        ErroAlert('Você está sem conexão! Conecte seu dispositivo e ')
+      }
+
+    });
+  };
 
   function toggleModalVisibility(type) {
     setModalVisible(true);
@@ -88,16 +109,18 @@ const Profile = ({ navigation }) => {
       try {
         saveDocument(
           authUser.uid,
-          { adress: adress,
+          {
+            adress: adress,
             cidade: city,
-            bairro: bairro} 
+            bairro: bairro
+          }
         );
         showMessage({
           message: `${'Seu Endereço ' + inputValue} foi alterado com sucesso`,
           type: "success",
           duration: 2800
         })
-        
+
 
       } catch (error) {
         ErroAlert(error)
@@ -157,7 +180,7 @@ const Profile = ({ navigation }) => {
   };
 
   useEffect(() => {
-
+    const checkifisConnected = CheckConnectivity();
     const getPhotoPermission = async () => {
       if (Constants.platform.ios) {
         const { status } = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
@@ -170,6 +193,9 @@ const Profile = ({ navigation }) => {
     if (authUser) {
       handleGet()
     }
+    return () => {
+      checkifisConnected;
+    };
 
   }, [])
 
