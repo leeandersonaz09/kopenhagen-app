@@ -37,28 +37,21 @@ const Profile = ({ navigation }) => {
   const [modalType, setmodalType] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const [keyboardType, setkeyboardType] = useState('');
-  const [objData, setobjData] = useState({});
 
   const handleGet = () => {
 
     getDocument(
       authUser.uid,
-      (result) => setuserData(result.data(),
-
-        setobjData({
-          city: result.data().cidade,
-          bairro: result.data().bairro,
-          Adress: result.data().adress
-        }),
-
-
-
-      ),
+      (result) => setuserData(result.data(),  
+      AsyncStorage.setItem('UserAdress', JSON.stringify({
+        city: result.data().cidade,
+        bairro: result.data().bairro,
+        Adress: result.data().adress
+      }))),
+      
     )
-    AsyncStorage.setItem('UserAdress', JSON.stringify(objData))
+   
   }
-
-  AsyncStorage.setItem('UserAdress', JSON.stringify(objData))
 
   const ErroAlert = (err) => {
     showMessage({
@@ -104,6 +97,7 @@ const Profile = ({ navigation }) => {
           type: "success",
           duration: 2800
         })
+        
 
       } catch (error) {
         ErroAlert(error)

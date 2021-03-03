@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Image} from 'react-native';
+import { View, Text, Image } from 'react-native';
 import 'react-native-gesture-handler';
 //import navigators
 import { createStackNavigator } from "@react-navigation/stack";
@@ -10,6 +10,7 @@ import { Icon } from 'native-base';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Ionicons } from "@expo/vector-icons";
 import * as Font from 'expo-font';
+import AsyncStorage from '@react-native-community/async-storage';
 //import de telas 
 import HomeScreen from "../screens/Home";
 import Loading from "../screens/Loading";
@@ -20,7 +21,7 @@ import LoginScreen from "../screens/Login";
 import SignUpScreen from "../screens/Signup";
 import Profile from "../screens/Profile";
 import Contact from "../screens/Contact";
-
+import { useFirebase } from './firebase'
 import Badge from '../components/Badge';
 //import styles
 import { colors } from '../styles';
@@ -50,10 +51,10 @@ const HomeStackScreen = () => (
         },
         headerTitle: () => (
           <Image
-          style={{width: 120, height: '100%'}}
-          source={require('../assets/kopenhagen.png')}
+            style={{ width: 120, height: '100%' }}
+            source={require('../assets/kopenhagen.png')}
           />
-      ),
+        ),
       }}
 
     />
@@ -110,7 +111,7 @@ const AppTabsScreen = () => (
       options={{
         tabBarLabel: 'Início',
         tabBarIcon: ({ color }) => (
-          <Icon name="home-outline" type='Ionicons' style={{ color: color, fontSize: 26}} />
+          <Icon name="home-outline" type='Ionicons' style={{ color: color, fontSize: 26 }} />
         ),
       }}
     />
@@ -121,7 +122,7 @@ const AppTabsScreen = () => (
         tabBarLabel: 'Carrinho',
         tabBarIcon: ({ color }) => (
           <View>
-            <Icon name="cart-outline" type='Ionicons' style={{ color: color, fontSize: 26}} />
+            <Icon name="cart-outline" type='Ionicons' style={{ color: color, fontSize: 26 }} />
             <Badge />
           </View>
         ),
@@ -133,7 +134,7 @@ const AppTabsScreen = () => (
       options={{
         tabBarLabel: 'Perfil',
         tabBarIcon: ({ color }) => (
-          <Icon name="person-circle-outline" type='Ionicons' style={{ color: color, fontSize: 26}} />
+          <Icon name="person-circle-outline" type='Ionicons' style={{ color: color, fontSize: 26 }} />
         ),
       }}
     />
@@ -144,7 +145,7 @@ const AppTabsScreen = () => (
         tabBarLabel: 'Contato',
         tabBarIcon: ({ color }) => (
           <View>
-            <Icon name="call-outline" type='Ionicons' style={{ color: color, fontSize: 26}} />
+            <Icon name="call-outline" type='Ionicons' style={{ color: color, fontSize: 26 }} />
           </View>
         ),
       }}
@@ -168,7 +169,7 @@ const StackScreen = () => (
 
 //Root Navigator
 const RootStackScreen = () => {
-
+  const { authUser, getDocument } = useFirebase();
   const [isLoading, setIsLoading] = useState(true);
   const [fontsLoaded, setfontsLoaded] = useState(false);
 
@@ -187,10 +188,27 @@ const RootStackScreen = () => {
 
   }
 
+  const getUserinfo = React.useCallback(() => {
+    if (authUser) {
+      getDocument(
+        authUser.uid,
+        (result) => AsyncStorage.setItem('UserAdress', JSON.stringify({
+          city: result.data().cidade,
+          bairro: result.data().bairro,
+          Adress: result.data().adress
+        }))
+      )
+    
+    }
+  }, [authUser])
+
+
   useEffect(() => {
     if (!fontsLoaded) {
       loadFonts();
     }
+
+    getUserinfo();
 
     setTimeout(() => {
       setIsLoading(!isLoading);

@@ -21,7 +21,6 @@ var firebaseConfig = {
 const useFirebase = () => {
   const [authUser, setAuthUser] = useState(firebase.auth().currentUser);
 
-
   useEffect(() => {
     const unsubscribe = firebase.auth()
       .onAuthStateChanged((user) => setAuthUser(user))
