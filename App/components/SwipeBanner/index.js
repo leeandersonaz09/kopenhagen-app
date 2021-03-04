@@ -12,11 +12,11 @@ import {
 var { height, width } = Dimensions.get('window');
 import Swiper from 'react-native-swiper'
 import { useFirebase } from '../../config/firebase'
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default function Banner() {
 
     const { getBanner } = useFirebase();
-
     const [dataBanner, setdataBanner] = useState([])
 
     /* 
@@ -27,14 +27,27 @@ export default function Banner() {
         ]
     */
 
-    useEffect(()=>{
+    const getPromo = () => {
 
-        getBanner("Promoções", (result)=>{
-            //console.log(result.data().banner)
-            setdataBanner(result.data().banner);
+        AsyncStorage.getItem('Banner').then((result) => {
+            if(result){
+                setdataBanner(JSON.parse(result))
+                //console.log(result)
+            }
+           
         })
 
-    }, []) 
+
+    }
+
+    useEffect(() => {
+
+        const unsubscribe = getPromo()
+        return () => {
+            unsubscribe
+        }
+
+    }, [])
 
     return (
         <ScrollView>
@@ -60,9 +73,9 @@ export default function Banner() {
 
 const styles = StyleSheet.create({
     imageBanner: {
-        height: 210,
-        width: "100%",
+        height: width / 2,
+        width: width - 40,
         borderRadius: 10,
-        //arginHorizontal: 15
+        marginHorizontal: 20
     },
 });

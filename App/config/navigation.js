@@ -169,7 +169,7 @@ const StackScreen = () => (
 
 //Root Navigator
 const RootStackScreen = () => {
-  const { authUser, getDocument } = useFirebase();
+  const { authUser, getDocument, getBanner } = useFirebase();
   const [isLoading, setIsLoading] = useState(true);
   const [fontsLoaded, setfontsLoaded] = useState(false);
 
@@ -188,19 +188,17 @@ const RootStackScreen = () => {
 
   }
 
-  const getUserinfo = React.useCallback(() => {
-    if (authUser) {
-      getDocument(
-        authUser.uid,
-        (result) => AsyncStorage.setItem('UserAdress', JSON.stringify({
-          city: result.data().cidade,
-          bairro: result.data().bairro,
-          Adress: result.data().adress
-        }))
-      )
-    
-    }
-  }, [authUser])
+  const getPromo = React.useCallback(() => {
+
+    getBanner("Promoções", (result) => {
+      //console.log(result.data().banner)
+      if (result) {
+        AsyncStorage.setItem('Banner', JSON.stringify(result.data().banner))
+
+      }
+    })
+
+  }, [])
 
 
   useEffect(() => {
@@ -208,7 +206,7 @@ const RootStackScreen = () => {
       loadFonts();
     }
 
-    getUserinfo();
+    getPromo();
 
     setTimeout(() => {
       setIsLoading(!isLoading);

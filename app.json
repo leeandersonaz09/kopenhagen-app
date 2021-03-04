@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Kopenhagen Salvador",
-    "slug": "roque-delivery",
+    "slug": "Kopenhagen-delivery-salvador",
     "description": "Kopenhagen Salvador, a melhor de todas!",
     "platforms": [
       "android"
@@ -32,9 +32,9 @@
         "foregroundImage": "./assets/ForegroudImage.png",
         "backgroundColor": "#060604"
       },
-      "permissions" : [],
-      "package": "com.roque.kopenhagen",
-      "versionCode": 8
+      "permissions" : ["CAMERA"],
+      "package": "com.salvador.kopenhagen",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"

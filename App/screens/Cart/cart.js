@@ -23,7 +23,7 @@ import fonts from '../../styles/fonts';
 
 export default function CartItem() {
 
-	const { authUser, getDocumentFrete, saveDocumentPedidos } = useFirebase();
+	const { authUser, getDocumentFrete, saveDocumentPedidos, getDocument } = useFirebase();
 	const cart = useSelector(itemsCartSelector);
 	const dispatch = useDispatch();
 	const [frete, setFrete] = useState(0.00);
@@ -32,32 +32,31 @@ export default function CartItem() {
 	let tlt = parseFloat(subtotal) + parseFloat(frete)
 	let total = tlt.toFixed(2)
 
-
-	const handleGet = useCallback(() => {
+	const handleGet = async() => {
 		if (authUser && cart.length > 0) {
-
-			//console.log(userAdress);
-			AsyncStorage.getItem('UserAdress').then((UserAdress) => {
-				setuserAdress(JSON.parse(UserAdress))
-				//console.log(userAdress)
-			}).then(() => {
-
-				getDocumentFrete(
-					userAdress.bairro,
-					(result) => {
-						const Val = result.data().valor
-						setFrete(parseFloat(Val))
-					},
-				)
-			})
+			await getDocument(
+				authUser.uid,
+				(result) => setuserAdress({
+					city: result.data().cidade,
+					bairro: result.data().bairro,
+					Adress: result.data().adress
+				})
+			)
+			getDocumentFrete(
+				userAdress.bairro,
+				(result) => {
+					const Val = result.data().valor
+					setFrete(parseFloat(Val))
+				},
+			)
 		}
-	}, [userAdress, authUser, cart])
+	}
 
 	useEffect(() => {
-
-	  handleGet();
-
-	}, [handleGet])
+		//getUserinfo();
+		handleGet();
+	
+	}, [])
 
 	function removeItemCart(item) {
 		//console.log(item.id);
