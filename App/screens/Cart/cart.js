@@ -32,30 +32,33 @@ export default function CartItem() {
 	let tlt = parseFloat(subtotal) + parseFloat(frete)
 	let total = tlt.toFixed(2)
 
-	const handleGet = async() => {
+	const handleGet = async () => {
 		if (authUser && cart.length > 0) {
-			await getDocument(
+			console.log("HANDLE GET");
+
+			getDocument(
 				authUser.uid,
 				(result) => setuserAdress({
 					city: result.data().cidade,
 					bairro: result.data().bairro,
 					Adress: result.data().adress
-				})
-			)
-			getDocumentFrete(
-				userAdress.bairro,
-				(result) => {
-					const Val = result.data().valor
-					setFrete(parseFloat(Val))
-				},
+				}),
+					getDocumentFrete(
+					userAdress.bairro,
+					(result) => {
+						const Val = result.data().valor
+						setFrete(parseFloat(Val))
+					},
+				)
+
 			)
 		}
 	}
 
 	useEffect(() => {
-		//getUserinfo();
+
 		handleGet();
-	
+
 	}, [])
 
 	function removeItemCart(item) {
@@ -182,10 +185,10 @@ export default function CartItem() {
 				</ScrollView>
 
 			) : (
-					<View style={styles.container2}>
-						<Text style={styles.textMessage}>Sem produtos no carrinho</Text>
-					</View>
-				)}
+				<View style={styles.container2}>
+					<Text style={styles.textMessage}>Sem produtos no carrinho</Text>
+				</View>
+			)}
 		</React.Fragment>
 	);
 }
