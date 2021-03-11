@@ -6,7 +6,9 @@ import styles from './styles';
 import { colors, metrics } from '../../styles';
 import { ExplorerList} from '../../components';
 import { useFirebase } from '../../config/firebase'
+import { showMessage } from 'react-native-flash-message';
 
+const Separator = () => <View style={styles.itemSeparator} />
 
 function Explorer({ route, navigation }) {
   const { getDataExplorer, getmoreDataExplorer } = useFirebase();
@@ -64,7 +66,7 @@ function Explorer({ route, navigation }) {
 
         querySnapshot.forEach(doc => {
 
-          const { img, tittle, description, price, data } = doc.data();
+          const { img, tittle, description, price, data, status, category } = doc.data();
           list.push({
             id: doc.id,
             img,
@@ -72,6 +74,8 @@ function Explorer({ route, navigation }) {
             title: tittle,
             price,
             data,
+            status, 
+            category
           });
         });
 
@@ -105,7 +109,7 @@ function Explorer({ route, navigation }) {
         if (!querySnapshot.empty) {
           querySnapshot.forEach(doc => {
 
-            const { img, tittle, description, price, data } = doc.data();
+            const { img, tittle, description, price, data, status, category } = doc.data();
             list.push({
               id: doc.id,
               img,
@@ -113,6 +117,8 @@ function Explorer({ route, navigation }) {
               title: tittle,
               price,
               data,
+              status,
+              category
             });
           });
           setdataBackup([...documentData, ...list]);
@@ -160,16 +166,22 @@ function Explorer({ route, navigation }) {
 
   }
 
+  const checkifOutStock=()=>{
+    showMessage({
+      message: `Produto temporariamente sem estoque!`,
+      type: 'warning',
+      duration: 2000
+  })
+  }
+
   const renderItens = (item, index) => {
     return (
       <>
         <View key={item.id} style={{ backgroundColor: '#fff' }}>
           <TouchableOpacity
-            onPress={() => navigation.push('Detalhes', item,)}
+            onPress={() => item.status ? navigation.push('Detalhes', item,) : checkifOutStock()}
           >
-            <View style={styles.separatorContainer}>
-              <ExplorerList data={item} />
-            </View>
+            <ExplorerList data={item} />
           </TouchableOpacity>
         </View>
       </>
@@ -191,6 +203,7 @@ function Explorer({ route, navigation }) {
           keyExtractor={item => item.id}
           refreshing={refreshing}
           ListFooterComponent={() => renderFooter()}
+          ItemSeparatorComponent={() => <Separator />}
         />
       )
     } else {

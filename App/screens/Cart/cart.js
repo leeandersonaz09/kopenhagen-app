@@ -41,23 +41,36 @@ export default function CartItem() {
 				(result) => setuserAdress({
 					city: result.data().cidade,
 					bairro: result.data().bairro,
-					Adress: result.data().adress
+					Adress: result.data().adress,
+					name: result.data().name,
+					phone: result.data().phone
 				}),
-					getDocumentFrete(
-					userAdress.bairro,
-					(result) => {
-						const Val = result.data().valor
-						setFrete(parseFloat(Val))
-					},
-				)
-
 			)
 		}
 	}
 
 	useEffect(() => {
 
-		handleGet();
+
+		if (authUser && cart.length > 0) {
+			getDocument(
+				authUser.uid,
+				(result) => (setuserAdress({
+					city: result.data().cidade,
+					bairro: result.data().bairro,
+					Adress: result.data().adress,
+					name: result.data().name,
+					phone: result.data().phone
+				}),
+					getDocumentFrete(
+						result.data().bairro,
+						(result) => {
+							const Val = result.data().valor
+							setFrete(parseFloat(Val))
+						},
+					))
+			)
+		}
 
 	}, [])
 
@@ -97,7 +110,7 @@ export default function CartItem() {
 						quantity: data.quantity,
 						title: data.title,
 						price: data.price,
-						img: data.img
+						img: data.img,
 					})
 					dispatch(removeItem(id));
 					counter--
@@ -106,7 +119,18 @@ export default function CartItem() {
 			moment.locale('pt-br');
 			await saveDocumentPedidos(
 				moment().format('llll'),
-				{ pedido, total: total, status: 'ativo', userId: authUser.uid, data: moment().format('llll') }
+				{
+					pedido,
+					total: total,
+					status: 'ativo',
+					userId: authUser.uid,
+					name: userAdress.name,
+					phone: userAdress.phone,
+					adress: userAdress.Adress,
+					city: userAdress.city,
+					bairro: userAdress.bairro, 
+					data: moment().format('llll')
+				}
 			);
 
 			showMessage({

@@ -9,6 +9,11 @@ const styles = StyleSheet.create({
     flex:1, 
     padding: 10,
   },
+  itemSeparator: {
+    flex: 1,
+    height: 1,
+    backgroundColor: '#444'
+  },
   headerTitle: {
     fontSize: fonts.header,
     color: colors.white,
