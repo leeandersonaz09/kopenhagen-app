@@ -47,49 +47,50 @@ export default function Pedidos({ documentDataIndex, loadingIndex }) {
 
 	React.useEffect(() => {
         if (authUser) {
-			const unsubscribe = getData()
-            return unsubscribe;
+
+            setLoading(true)
+
+            getMyrequest(
+
+                (result) => {
+
+                    if (!result.empty) {
+
+                        let list = [];
+
+                        result.forEach(doc => {
+                            let mapData = Object.values(doc.data().pedido);
+                            const { total, status, userId, name, phone, adress, bairro, city } = doc.data();
+
+                            list.push({
+                                id: doc.id,
+                                total,
+                                status,
+                                pedido: mapData,
+                                userId,
+                                name,
+                                phone,
+                                adress,
+                                bairro,
+                                city
+                            })
+
+                        });
+                        setdocumentData(list);
+                        setTimeout(() => {
+                            setLoading(false);
+                        }, 2000);
+
+                    } else {
+                        setTimeout(() => {
+                            setLoading(false);
+                        }, 2000);
+                        setdocumentData(null);
+                    }
+                },
+            );
         }
     }, []);
-
-    const getData = async () => {
-        setLoading(true)
-        
-       await getMyrequest(
-          
-            (result) => {
-
-                if (!result.empty) {
-
-                    let list = [];
-
-                    result.forEach(doc => {
-                        let mapData = Object.values(doc.data().pedido);
-                        const { total, status } = doc.data();
-
-                        list.push({
-                            id: doc.id,
-                            total,
-                            status,
-                            pedido: mapData
-                        })
-
-                    });
-                    setdocumentData(list);
-                    setTimeout(() => {
-                        setLoading(false);
-                    }, 2000);
-
-                } else {
-                    setTimeout(() => {
-                        setLoading(false);
-                    }, 2000);
-                    setdocumentData(null);
-                }
-            },
-        );
-
-    }
 
     const renderData = () => {
 
@@ -128,7 +129,7 @@ export default function Pedidos({ documentDataIndex, loadingIndex }) {
                                                     <View>
                                                         <Text style={styles2.data}>{data.id}</Text>
                                                     </View>
-                                                    <View style={[styles2.statusView, {backgroundColor: data.status == 'ativo'  || data.status == 'Entregue' ? colors.green : colors.red }]}>
+                                                    <View style={[styles2.statusView, { backgroundColor: data.status == 'ativo' || data.status == 'entregue' || data.status == 'a caminho' ? colors.green : colors.red }]}>
                                                         <Text style={styles2.status}>{data.status}</Text>
                                                     </View>
                                                 </View>

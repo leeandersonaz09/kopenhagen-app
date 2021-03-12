@@ -14,7 +14,6 @@ import Item from '../../components/Item';
 import { Icon } from 'native-base';
 import moment from 'moment';
 import 'moment/locale/pt-br';
-import AsyncStorage from '@react-native-community/async-storage';
 import { showMessage } from 'react-native-flash-message';
 import styles from './styles';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -38,27 +37,10 @@ export default function CartItem() {
 
 			getDocument(
 				authUser.uid,
-				(result) => setuserAdress({
-					city: result.data().cidade,
-					bairro: result.data().bairro,
-					Adress: result.data().adress,
-					name: result.data().name,
-					phone: result.data().phone
-				}),
-			)
-		}
-	}
-
-	useEffect(() => {
-
-
-		if (authUser && cart.length > 0) {
-			getDocument(
-				authUser.uid,
 				(result) => (setuserAdress({
 					city: result.data().cidade,
 					bairro: result.data().bairro,
-					Adress: result.data().adress,
+					adress: result.data().adress,
 					name: result.data().name,
 					phone: result.data().phone
 				}),
@@ -70,6 +52,31 @@ export default function CartItem() {
 						},
 					))
 			)
+		}
+	}
+
+	useEffect(() => {
+
+		if (authUser) {
+			const unsubscribe = getDocument(authUser.uid, (result) => (
+				setuserAdress({
+					city: result.data().cidade,
+					bairro: result.data().bairro,
+					adress: result.data().adress,
+					name: result.data().name,
+					phone: result.data().phone
+				}),
+				getDocumentFrete(
+					result.data().bairro,
+					(result) => {
+						const Val = result.data().valor
+						setFrete(parseFloat(Val))
+					},
+				))
+			)
+			return () => {
+				unsubscribe;
+			};
 		}
 
 	}, [])
@@ -119,18 +126,7 @@ export default function CartItem() {
 			moment.locale('pt-br');
 			await saveDocumentPedidos(
 				moment().format('llll'),
-				{
-					pedido,
-					total: total,
-					status: 'ativo',
-					userId: authUser.uid,
-					name: userAdress.name,
-					phone: userAdress.phone,
-					adress: userAdress.Adress,
-					city: userAdress.city,
-					bairro: userAdress.bairro, 
-					data: moment().format('llll')
-				}
+				{ pedido, total: total, status: 'ativo', userId: authUser.uid, data: moment().format('llll'), adress: userAdress.adress, bairro: userAdress.bairro, name: userAdress.name, phone: userAdress.phone, city: userAdress.city }
 			);
 
 			showMessage({
