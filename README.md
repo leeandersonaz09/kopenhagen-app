@@ -3,7 +3,7 @@
 </h1>
 
 <h1 align="center">
-  Kopenhagen Salvador (ADM)
+  Kopenhagen Salvador
 </h1>
 
 <h4 align="center">
